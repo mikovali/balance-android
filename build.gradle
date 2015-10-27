@@ -4,15 +4,25 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+        classpath "com.neenbedankt.gradle.plugins:android-apt:1.8"
     }
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+repositories {
+    jcenter()
+}
 
 dependencies {
     compile "com.android.support:support-annotations:$androidSupportLibraryVersion"
     compile "com.android.support:support-v4:$androidSupportLibraryVersion"
     compile "com.android.support:appcompat-v7:$androidSupportLibraryVersion"
+
+    compile 'com.google.dagger:dagger:2.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    provided 'javax.annotation:javax.annotation-api:1.2'
 }
 
 android {
