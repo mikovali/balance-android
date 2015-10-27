@@ -1,0 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+    }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    buildToolsVersion androidBuildToolsVersion
+    compileSdkVersion Integer.parseInt(androidCompileSdkVersion)
+
+    defaultConfig {
+        minSdkVersion Integer.parseInt(androidMinSdkVersion)
+        targetSdkVersion Integer.parseInt(androidTargetSdkVersion)
+
+        applicationId 'io.github.mikovali.balance.android'
+        versionCode Integer.parseInt(appVersionCode)
+        versionName appVersionName
+    }
+}
