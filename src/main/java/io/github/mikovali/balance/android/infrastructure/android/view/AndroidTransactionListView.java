@@ -33,14 +33,16 @@ public class AndroidTransactionListView extends FrameLayout implements Transacti
 
     public AndroidTransactionListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        App.getAppComponent(context).inject(this);
+        if (!isInEditMode()) {
+            App.getAppComponent(context).inject(this);
+        }
         inflate(context, R.layout.transaction_list, this);
         adapter = new TransactionAdapter();
     }
 
     @Override
     public void setInProgress(boolean inProgress) {
-        contentView.setDisplayedChild(inProgress ? 0 : 1);
+        contentView.setDisplayedChild(inProgress ? 1 : 0);
     }
 
     @Override
@@ -62,7 +64,9 @@ public class AndroidTransactionListView extends FrameLayout implements Transacti
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        presenter.attachView(this);
+        if (!isInEditMode()) {
+            presenter.attachView(this);
+        }
     }
 
     @Override
