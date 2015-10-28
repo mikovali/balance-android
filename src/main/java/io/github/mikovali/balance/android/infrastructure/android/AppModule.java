@@ -28,7 +28,6 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton
     TransactionListPresenter provideTransactionListPresenter(
             TransactionRepository transactionRepository) {
         return new TransactionListPresenter(transactionRepository);

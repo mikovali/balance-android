@@ -1,14 +1,22 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ViewAnimator;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 import io.github.mikovali.balance.android.application.transaction.TransactionListView;
+import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.infrastructure.android.App;
 
 public class AndroidTransactionListView extends FrameLayout implements TransactionListView {
@@ -16,14 +24,50 @@ public class AndroidTransactionListView extends FrameLayout implements Transacti
     @Inject
     TransactionListPresenter presenter;
 
+    @Bind(android.R.id.content)
+    ViewAnimator contentView;
+    @Bind(android.R.id.list)
+    RecyclerView listView;
+
+    private final TransactionAdapter adapter;
+
     public AndroidTransactionListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         App.getAppComponent(context).inject(this);
+        inflate(context, R.layout.transaction_list, this);
+        adapter = new TransactionAdapter();
+    }
+
+    @Override
+    public void setInProgress(boolean inProgress) {
+        contentView.setDisplayedChild(inProgress ? 0 : 1);
+    }
+
+    @Override
+    public void setTransactions(List<Transaction> transactions) {
+        adapter.setTransactions(transactions);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        ButterKnife.bind(this);
+
+        listView.setHasFixedSize(true);
+        listView.setLayoutManager(new LinearLayoutManager(getContext()));
+        listView.setAdapter(adapter);
+        listView.addItemDecoration(new CardViewBottomMarginDecorator());
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Log.e("AAA", "presenter: " + presenter);
+        presenter.attachView(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        presenter.detachView();
+        super.onDetachedFromWindow();
     }
 }
