@@ -4,6 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/green700</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="colorButtonNormal">?colorAccent</item>
+        <item name="buttonStyle">@style/Widget.App.Button</item>
         <!-- custom attributes -->
         <item name="cardViewBottomMargin">@dimen/cardViewBottomMargin</item>
     </style>
