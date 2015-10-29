@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".infrastructure.android.Activity">
 
-    <io.github.mikovali.balance.android.infrastructure.android.view.AndroidTransactionListView
+    <io.github.mikovali.balance.android.infrastructure.android.view.TransactionListAndroidView
         android:id="@+id/transactionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

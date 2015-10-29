@@ -13,14 +13,14 @@ import io.github.mikovali.balance.android.application.transaction.TransactionLis
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.infrastructure.android.App;
 
-public class AndroidTransactionListView extends RecyclerView implements TransactionListView {
+public class TransactionListAndroidView extends RecyclerView implements TransactionListView {
 
     @Inject
     TransactionListPresenter presenter;
 
     private final TransactionAdapter adapter;
 
-    public AndroidTransactionListView(Context context, AttributeSet attrs) {
+    public TransactionListAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode()) {
             App.getAppComponent(context).inject(this);
