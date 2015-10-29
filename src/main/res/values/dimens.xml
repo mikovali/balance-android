@@ -2,5 +2,6 @@
 <resources>
 
     <dimen name="cardViewBottomMargin">8dp</dimen>
+    <dimen name="fabMargin">16dp</dimen>
 
 </resources>

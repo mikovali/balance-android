@@ -2,5 +2,6 @@
 <resources>
 
     <attr name="cardViewBottomMargin" format="dimension" />
+    <attr name="fabMargin" format="dimension" />
 
 </resources>

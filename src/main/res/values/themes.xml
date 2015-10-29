@@ -9,6 +9,7 @@
         <item name="buttonStyle">@style/Widget.App.Button</item>
         <!-- custom attributes -->
         <item name="cardViewBottomMargin">@dimen/cardViewBottomMargin</item>
+        <item name="fabMargin">@dimen/fabMargin</item>
     </style>
 
 </resources>
