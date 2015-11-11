@@ -1,6 +1,8 @@
 package io.github.mikovali.balance.android.infrastructure.android.content;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.SystemClock;
 
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -11,10 +13,9 @@ import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func0;
 import rx.functions.Func1;
-import rx.observables.ConnectableObservable;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static io.github.mikovali.balance.android.application.Constants.DB_APP_TRANSACTIONS;
 import static io.github.mikovali.balance.android.application.Constants.DB_APP_TRANSACTIONS_AMOUNT;
@@ -24,28 +25,13 @@ public class SqliteTransactionRepository implements TransactionRepository {
 
     private final BriteDatabase appDatabase;
 
-    private final ConnectableObservable<List<Transaction>> findObservable = Observable
-            .defer(new Func0<Observable<List<Transaction>>>() {
-                @Override
-                public Observable<List<Transaction>> call() {
-                    return doFind();
-                }
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .replay(1);
-
     public SqliteTransactionRepository(BriteDatabase appDatabase) {
         this.appDatabase = appDatabase;
-        findObservable.connect();
     }
 
     @Override
     public Observable<List<Transaction>> find() {
-        return findObservable;
-    }
-
-    private Observable<List<Transaction>> doFind() {
+        Timber.e("CREATE FIND OBSERVABLE IN REPOSITORY");
         return appDatabase
                 .createQuery(DB_APP_TRANSACTIONS, String.format("SELECT %s, %s FROM %s",
                         DB_APP_TRANSACTIONS_ID, DB_APP_TRANSACTIONS_AMOUNT, DB_APP_TRANSACTIONS))
@@ -59,6 +45,32 @@ public class SqliteTransactionRepository implements TransactionRepository {
 
                         return new Transaction(id, amount);
                     }
-                });
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<Transaction> insert(Transaction transaction) {
+        return Observable.just(transaction)
+                .map(new Func1<Transaction, Transaction>() {
+                    @Override
+                    public Transaction call(Transaction transaction) {
+                        Timber.e("START INSET TRANSACTION");
+                        SystemClock.sleep(3000);
+
+                        final ContentValues values = new ContentValues();
+                        values.put(DB_APP_TRANSACTIONS_ID, transaction.getId().toString());
+                        values.put(DB_APP_TRANSACTIONS_AMOUNT, transaction.getAmount());
+
+                        appDatabase.insert(DB_APP_TRANSACTIONS, values);
+
+                        Timber.e("END INSET TRANSACTION");
+
+                        return transaction;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

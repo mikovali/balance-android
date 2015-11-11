@@ -1,5 +1,6 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,13 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.UUID;
+
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.github.mikovali.balance.android.R;
+import io.github.mikovali.balance.android.domain.model.Transaction;
+import io.github.mikovali.balance.android.domain.model.TransactionRepository;
+import io.github.mikovali.balance.android.infrastructure.android.App;
+import rx.Observable;
 import timber.log.Timber;
 
 public class TransactionListFragment extends Fragment {
+
+    @Inject
+    TransactionRepository transactionRepository;
 
     @Bind(R.id.toolbar)
     Toolbar toolbarView;
@@ -31,9 +43,17 @@ public class TransactionListFragment extends Fragment {
     public void onCreateButtonClick() {
         Timber.e("onCreateButtonClick");
         // TODO create Transaction
+        final Transaction transaction = new Transaction(UUID.randomUUID(), ((int) (Math.random() * 1000)));
+        transactionRepository.insert(transaction).subscribe();
     }
 
     // lifecycle
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        App.getAppComponent(context).inject(this);
+    }
 
     @Nullable
     @Override
