@@ -34,6 +34,7 @@ public class TransactionListPresenter {
     public void detachView() {
         if (findSubscription != null && !findSubscription.isUnsubscribed()) {
             findSubscription.unsubscribe();
+            findSubscription = null;
         }
         view = null;
     }
