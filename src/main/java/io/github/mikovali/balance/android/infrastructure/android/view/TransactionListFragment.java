@@ -14,37 +14,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.UUID;
-
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.github.mikovali.android.utils.FragmentUtils;
 import io.github.mikovali.balance.android.R;
-import io.github.mikovali.balance.android.domain.model.Transaction;
-import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.App;
-import rx.Observable;
-import timber.log.Timber;
 
 public class TransactionListFragment extends Fragment {
 
-    @Inject
-    TransactionRepository transactionRepository;
+    public interface Listener {
+        void onTransactionCreateButtonClick();
+    }
 
     @Bind(R.id.toolbar)
     Toolbar toolbarView;
     @Bind(R.id.transactionCreateButton)
     FloatingActionButton createButton;
 
+    private Listener listener;
+
     @OnClick(R.id.transactionCreateButton)
     @SuppressWarnings("unused")
     public void onCreateButtonClick() {
-        Timber.e("onCreateButtonClick");
-        // TODO create Transaction
-        final Transaction transaction = new Transaction(UUID.randomUUID(), ((int) (Math.random() * 1000)));
-        transactionRepository.insert(transaction).subscribe();
+        if (listener != null) {
+            listener.onTransactionCreateButtonClick();
+        }
     }
 
     // lifecycle
@@ -53,6 +48,18 @@ public class TransactionListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         App.getAppComponent(context).inject(this);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        listener = FragmentUtils.getParentAs(this, Listener.class);
+    }
+
+    @Override
+    public void onDestroy() {
+        listener = null;
+        super.onDestroy();
     }
 
     @Nullable
