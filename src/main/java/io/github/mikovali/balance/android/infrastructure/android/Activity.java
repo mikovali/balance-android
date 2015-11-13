@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListFragment;
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateFragment;
@@ -34,6 +35,19 @@ public class Activity extends AppCompatActivity implements TransactionListFragme
             fragmentManager.beginTransaction()
                     .add(android.R.id.content, TransactionListFragment.newInstance())
                     .commit();
+        }
+    }
+
+    // menu
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

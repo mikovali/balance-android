@@ -5,18 +5,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.mikovali.balance.android.R;
 
 import static io.github.mikovali.balance.android.application.Constants.KEY_FRAGMENT_ANIMATION_PIVOT;
 
 public class TransactionUpdateFragment extends Fragment {
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbarView;
+    @Bind(R.id.transactionUpdate)
+    TransactionUpdateView transactionUpdateView;
 
     private PointF animationPivot;
     private int animationDuration;
@@ -59,6 +67,20 @@ public class TransactionUpdateFragment extends Fragment {
     public void onDestroyView() {
         ButterKnife.unbind(this);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        toolbarView.setNavigationIcon(R.drawable.ic_close);
+        toolbarView.setNavigationContentDescription(R.string.transaction_update_close);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbarView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.transaction_update_create_title);
     }
 
     // factories

@@ -3,4 +3,12 @@
 
     <string name="transaction_list_empty_text">No transactions to show</string>
 
+    <string name="transaction_update_create_title">New transaction</string>
+    <string name="transaction_update_close">Close</string>
+    <string name="transaction_update_amount_sign_positive">Income</string>
+    <string name="transaction_update_amount_sign_negative">Expense</string>
+    <string name="transaction_update_amount">Amount</string>
+    <string name="transaction_update_description">Add notes to the transaction…</string>
+    <string name="transaction_update_create_button">Create transaction</string>
+
 </resources>

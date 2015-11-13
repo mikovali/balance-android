@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <RadioGroup
+            android:id="@+id/transactionAmountSign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/transactionAmountSignNegative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/transaction_update_amount_sign_negative" />
+
+            <RadioButton
+                android:id="@+id/transactionAmountSignPositive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/transaction_update_amount_sign_positive" />
+
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/transactionAmountLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionAmountSign"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/transactionAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number|numberDecimal"
+                android:imeOptions="flagNoExtractUi"
+                android:hint="@string/transaction_update_amount" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/transactionDescriptionLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionAmountLabel"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/transactionDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:inputType="text|textLongMessage|textMultiLine"
+                android:minLines="3"
+                android:hint="@string/transaction_update_description"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionDescriptionLabel"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/transactionUpdatePositiveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/transaction_update_create_button" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</merge>
