@@ -1,7 +1,9 @@
 package io.github.mikovali.balance.android.infrastructure.android;
 
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListFragment;
@@ -12,9 +14,10 @@ public class Activity extends AppCompatActivity implements TransactionListFragme
     private FragmentManager fragmentManager;
 
     @Override
-    public void onTransactionCreateButtonClick() {
+    public void onTransactionCreateButtonClick(PointF animationPivot) {
         fragmentManager.beginTransaction()
-                .replace(android.R.id.content, TransactionUpdateFragment.newInstance())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, TransactionUpdateFragment.newInstance(animationPivot))
                 .addToBackStack(null)
                 .commit();
     }

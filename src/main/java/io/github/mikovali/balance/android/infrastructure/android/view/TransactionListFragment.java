@@ -2,6 +2,7 @@ package io.github.mikovali.balance.android.infrastructure.android.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,7 +25,7 @@ import io.github.mikovali.balance.android.infrastructure.android.App;
 public class TransactionListFragment extends Fragment {
 
     public interface Listener {
-        void onTransactionCreateButtonClick();
+        void onTransactionCreateButtonClick(PointF animationPivot);
     }
 
     @Bind(R.id.toolbar)
@@ -36,9 +37,11 @@ public class TransactionListFragment extends Fragment {
 
     @OnClick(R.id.transactionCreateButton)
     @SuppressWarnings("unused")
-    public void onCreateButtonClick() {
+    public void onCreateButtonClick(View view) {
         if (listener != null) {
-            listener.onTransactionCreateButtonClick();
+            final PointF animationPivot = new PointF(view.getX() + view.getPivotX(),
+                    view.getY() + view.getPivotY());
+            listener.onTransactionCreateButtonClick(animationPivot);
         }
     }
 
