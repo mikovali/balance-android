@@ -23,8 +23,6 @@ public class TransactionUpdateFragment extends Fragment {
 
     @Bind(R.id.toolbar)
     Toolbar toolbarView;
-    @Bind(R.id.transactionUpdate)
-    TransactionUpdateView transactionUpdateView;
 
     private PointF animationPivot;
     private int animationDuration;

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="?colorPrimary" />
 
-    <io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateView
+    <io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateAndroidView
         android:id="@+id/transactionUpdate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
