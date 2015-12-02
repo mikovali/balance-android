@@ -4,6 +4,6 @@
 
     <application
         tools:replace="android:name"
-        android:name="io.github.mikovali.balance.android.infrastructure.android.DebugApp" />
+        android:name=".infrastructure.android.DebugApp" />
 
 </manifest>
