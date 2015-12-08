@@ -1,12 +1,10 @@
 package io.github.mikovali.balance.android.infrastructure.dagger;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
 import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 
+@AppScope
 @Component(modules = AppModule.class)
-@Singleton
 public interface AppComponent {
 
     void inject(TransactionListPresenter transactionListPresenter);

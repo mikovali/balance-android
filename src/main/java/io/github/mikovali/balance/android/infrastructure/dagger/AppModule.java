@@ -3,8 +3,6 @@ package io.github.mikovali.balance.android.infrastructure.dagger;
 import android.app.Application;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
@@ -23,7 +21,7 @@ public class AppModule {
     // Application
 
     @Provides
-    @Singleton
+    @AppScope
     SQLiteOpenHelper provideAppDatabaseOpenHelper() {
         return new AppDatabase(application);
     }
@@ -31,7 +29,7 @@ public class AppModule {
     // Transaction
 
     @Provides
-    @Singleton
+    @AppScope
     TransactionRepository provideTransactionRepository(SQLiteOpenHelper appDatabaseOpenHelper) {
         return new SqliteTransactionRepository(appDatabaseOpenHelper);
     }
