@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android;
+package io.github.mikovali.balance.android.infrastructure.dagger;
 
 import javax.inject.Singleton;
 
