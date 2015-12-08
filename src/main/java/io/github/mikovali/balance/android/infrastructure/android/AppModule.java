@@ -1,15 +1,12 @@
 package io.github.mikovali.balance.android.infrastructure.android;
 
 import android.app.Application;
-
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.AppDatabase;
 import io.github.mikovali.balance.android.infrastructure.android.content.SqliteTransactionRepository;
@@ -27,22 +24,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    BriteDatabase provideAppDatabase() {
-        return SqlBrite.create()
-                .wrapDatabaseHelper(new AppDatabase(application));
+    SQLiteOpenHelper provideAppDatabaseOpenHelper() {
+        return new AppDatabase(application);
     }
 
     // Transaction
 
     @Provides
     @Singleton
-    TransactionRepository provideTransactionRepository(BriteDatabase appDatabase) {
-        return new SqliteTransactionRepository(appDatabase);
-    }
-
-    @Provides
-    TransactionListPresenter provideTransactionListPresenter(
-            TransactionRepository transactionRepository) {
-        return new TransactionListPresenter(transactionRepository);
+    TransactionRepository provideTransactionRepository(SQLiteOpenHelper appDatabaseOpenHelper) {
+        return new SqliteTransactionRepository(appDatabaseOpenHelper);
     }
 }

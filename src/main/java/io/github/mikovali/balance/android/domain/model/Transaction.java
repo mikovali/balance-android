@@ -1,8 +1,13 @@
 package io.github.mikovali.balance.android.domain.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.UUID;
 
-public class Transaction {
+import io.github.mikovali.android.utils.ParcelUtils;
+
+public class Transaction implements Parcelable {
 
     private final UUID id;
 
@@ -30,4 +35,33 @@ public class Transaction {
         }
         this.amount = amount;
     }
+
+    // parcel
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        ParcelUtils.writeUuid(id, dest);
+        dest.writeLong(amount);
+    }
+
+    private Transaction(Parcel in) {
+        id = ParcelUtils.readUuid(in);
+        amount = in.readLong();
+    }
+
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel source) {
+            return new Transaction(source);
+        }
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
 }

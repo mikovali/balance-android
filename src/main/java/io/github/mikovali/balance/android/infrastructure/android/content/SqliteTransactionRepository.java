@@ -1,10 +1,10 @@
 package io.github.mikovali.balance.android.infrastructure.android.content;
 
-import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.SystemClock;
 
-import com.squareup.sqlbrite.BriteDatabase;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.mikovali.balance.android.domain.model.Transaction;
@@ -12,7 +12,7 @@ import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.mapper.TransactionMapper;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
+import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 import static io.github.mikovali.balance.android.application.Constants.DB_APP_TRANSACTIONS;
@@ -21,21 +21,34 @@ import static io.github.mikovali.balance.android.application.Constants.DB_APP_TR
 
 public class SqliteTransactionRepository implements TransactionRepository {
 
-    private final BriteDatabase appDatabase;
+    private final SQLiteOpenHelper appDatabaseOpenHelper;
 
-    public SqliteTransactionRepository(BriteDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+    public SqliteTransactionRepository(SQLiteOpenHelper appDatabaseOpenHelper) {
+        this.appDatabaseOpenHelper = appDatabaseOpenHelper;
     }
 
     @Override
     public Observable<List<Transaction>> find() {
-        return appDatabase
-                .createQuery(DB_APP_TRANSACTIONS, String.format("SELECT %s, %s FROM %s",
-                        DB_APP_TRANSACTIONS_ID, DB_APP_TRANSACTIONS_AMOUNT, DB_APP_TRANSACTIONS))
-                .mapToList(new Func1<Cursor, Transaction>() {
+        return Observable
+                .defer(new Func0<Observable<List<Transaction>>>() {
                     @Override
-                    public Transaction call(Cursor cursor) {
-                        return TransactionMapper.fromCursor(cursor);
+                    public Observable<List<Transaction>> call() {
+                        SystemClock.sleep(3000);
+
+                        final List<Transaction> transactions = new ArrayList<>();
+
+                        final Cursor cursor = appDatabaseOpenHelper.getReadableDatabase()
+                                .rawQuery(String.format("SELECT %s, %s FROM %s",
+                                        DB_APP_TRANSACTIONS_ID, DB_APP_TRANSACTIONS_AMOUNT,
+                                        DB_APP_TRANSACTIONS), null);
+                        if (cursor.moveToFirst()) {
+                            do {
+                                transactions.add(TransactionMapper.fromCursor(cursor));
+                            } while (cursor.moveToNext());
+                        }
+                        cursor.close();
+
+                        return Observable.just(transactions);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -44,16 +57,6 @@ public class SqliteTransactionRepository implements TransactionRepository {
 
     @Override
     public Observable<Transaction> insert(Transaction transaction) {
-        return Observable.just(transaction)
-                .map(new Func1<Transaction, Transaction>() {
-                    @Override
-                    public Transaction call(Transaction transaction) {
-                        final ContentValues values = TransactionMapper.toContentValues(transaction);
-                        appDatabase.insert(DB_APP_TRANSACTIONS, values);
-                        return transaction;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return null;
     }
 }

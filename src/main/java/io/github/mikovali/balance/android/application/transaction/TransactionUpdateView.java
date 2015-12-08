@@ -1,4 +1,6 @@
 package io.github.mikovali.balance.android.application.transaction;
 
-public interface TransactionUpdateView {
+import io.github.mikovali.android.mvp.View;
+
+public interface TransactionUpdateView extends View {
 }

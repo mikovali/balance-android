@@ -1,6 +1,5 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
@@ -20,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.github.mikovali.android.utils.FragmentUtils;
 import io.github.mikovali.balance.android.R;
-import io.github.mikovali.balance.android.infrastructure.android.App;
 
 public class TransactionListFragment extends Fragment {
 
@@ -46,12 +44,6 @@ public class TransactionListFragment extends Fragment {
     }
 
     // lifecycle
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        App.getAppComponent(context).inject(this);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
