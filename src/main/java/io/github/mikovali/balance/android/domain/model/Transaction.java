@@ -54,10 +54,14 @@ public class Transaction implements Parcelable {
         amount = in.readLong();
     }
 
-    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+    public static final Creator<Transaction> CREATOR = new ClassLoaderCreator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel source, ClassLoader loader) {
+            return new Transaction(source);
+        }
         @Override
         public Transaction createFromParcel(Parcel source) {
-            return new Transaction(source);
+            return createFromParcel(source, null);
         }
         @Override
         public Transaction[] newArray(int size) {

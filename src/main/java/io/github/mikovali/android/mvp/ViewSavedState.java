@@ -3,7 +3,6 @@ package io.github.mikovali.android.mvp;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 
 /**
  * View implementations should use this to pass the state saving to the presenter.
@@ -11,7 +10,9 @@ import android.view.View;
  * @see #onSaveInstanceState(Parcelable, Presenter)
  * @see #onRestoreInstanceState(Parcelable, Presenter)
  */
-public class ViewSavedState extends View.BaseSavedState {
+public class ViewSavedState implements Parcelable {
+
+    private final Parcelable superState;
 
     private final Bundle presenterState;
 
@@ -49,29 +50,38 @@ public class ViewSavedState extends View.BaseSavedState {
         }
         final ViewSavedState savedState = (ViewSavedState) state;
         presenter.onRestoreState(savedState.presenterState);
-        return savedState.getSuperState();
+        return savedState.superState;
     }
 
     private ViewSavedState(Parcelable superState, Bundle presenterState) {
-        super(superState);
+        this.superState = superState;
         this.presenterState = presenterState;
     }
 
     @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
     public void writeToParcel(Parcel out, int flags) {
-        super.writeToParcel(out, flags);
+        out.writeParcelable(superState, flags);
         out.writeBundle(presenterState);
     }
 
-    private ViewSavedState(Parcel source) {
-        super(source);
-        presenterState = source.readBundle();
+    private ViewSavedState(Parcel source, ClassLoader classLoader) {
+        superState = source.readParcelable(classLoader);
+        presenterState = source.readBundle(classLoader);
     }
 
-    public static final Creator<ViewSavedState> CREATOR = new Creator<ViewSavedState>() {
+    public static final Creator<ViewSavedState> CREATOR = new ClassLoaderCreator<ViewSavedState>() {
+        @Override
+        public ViewSavedState createFromParcel(Parcel source, ClassLoader loader) {
+            return new ViewSavedState(source, loader);
+        }
         @Override
         public ViewSavedState createFromParcel(Parcel source) {
-            return new ViewSavedState(source);
+            return createFromParcel(source, null);
         }
         @Override
         public ViewSavedState[] newArray(int size) {
