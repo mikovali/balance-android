@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
-import io.github.mikovali.android.mvp.PresenterOnAttachStateChangeListener;
 import io.github.mikovali.android.mvp.ViewSavedState;
 import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 import io.github.mikovali.balance.android.application.transaction.TransactionListView;
@@ -23,7 +22,6 @@ public class TransactionListAndroidView extends RecyclerView implements Transact
         super(context, attrs);
         presenter = new TransactionListPresenter(this);
         adapter = new TransactionAdapter();
-        addOnAttachStateChangeListener(new PresenterOnAttachStateChangeListener(presenter));
     }
 
     @Override
