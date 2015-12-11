@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
+import io.github.mikovali.android.mvp.PresenterOnAttachStateChangeListener;
 import io.github.mikovali.android.mvp.ViewSavedState;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.transaction.TransactionUpdatePresenter;
@@ -17,22 +18,16 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
     public TransactionUpdateAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
         presenter = new TransactionUpdatePresenter(this);
-        setFillViewport(true);
+        addOnAttachStateChangeListener(new PresenterOnAttachStateChangeListener(presenter));
         inflate(context, R.layout.transaction_update, this);
     }
 
     // lifecycle
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        presenter.onAttachedToWindow();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        presenter.onDetachedFromWindow();
-        super.onDetachedFromWindow();
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        setFillViewport(true);
     }
 
     @Override
