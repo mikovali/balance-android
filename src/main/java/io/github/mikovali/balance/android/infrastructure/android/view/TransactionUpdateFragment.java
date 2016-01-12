@@ -1,9 +1,13 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
+import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -70,7 +74,11 @@ public class TransactionUpdateFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbarView.setNavigationIcon(R.drawable.ic_close);
+        // tint navigation icon
+        final Drawable navigationIcon = DrawableCompat.wrap(ResourcesCompat
+                .getDrawable(getResources(), R.drawable.ic_clear, null));
+        DrawableCompat.setTint(navigationIcon, Color.WHITE);
+        toolbarView.setNavigationIcon(navigationIcon);
         toolbarView.setNavigationContentDescription(R.string.transaction_update_close);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbarView);
     }
