@@ -39,9 +39,26 @@ public class Activity extends AppCompatActivity {
         flow.setDispatcher(new Flow.Dispatcher() {
             @Override
             public void dispatch(Flow.Traversal traversal, Flow.TraversalCallback callback) {
+                final History origin = traversal.origin;
+                final Screen originScreen = origin.top();
+                final View originView = originScreen.getView(Activity.this);
+
                 final History destination = traversal.destination;
                 final Screen destinationScreen = destination.top();
                 final View destinationView = destinationScreen.getView(Activity.this);
+
+                switch (traversal.direction) {
+                    case FORWARD:
+                        origin.currentViewState().save(originView);
+                        break;
+                    case BACKWARD:
+                        destination.currentViewState().restore(destinationView);
+                        break;
+                    case REPLACE:
+                    default:
+                        // view lifecycle takes care of the state
+                        break;
+                }
 
                 setContentView(destinationView);
 
