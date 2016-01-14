@@ -36,6 +36,8 @@ dependencies {
 
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 
+    compile 'com.squareup.flow:flow:0.12'
+
     debugCompile 'com.facebook.stetho:stetho:1.2.0'
 }
 
