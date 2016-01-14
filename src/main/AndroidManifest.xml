@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true">
 
-        <activity android:name=".infrastructure.android.Activity" />
+        <activity android:name=".infrastructure.android.Activity"
+            android:exported="true" />
 
         <activity-alias
             android:name="LauncherActivity"
