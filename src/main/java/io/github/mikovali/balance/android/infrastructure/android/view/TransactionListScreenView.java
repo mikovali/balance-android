@@ -2,6 +2,7 @@ package io.github.mikovali.balance.android.infrastructure.android.view;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -17,13 +18,6 @@ import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.infrastructure.flow.Screen;
 
 public final class TransactionListScreenView extends CoordinatorLayout {
-
-    public static final class TransactionListScreen implements Screen {
-        @Override
-        public View getView(AppCompatActivity activity) {
-            return new TransactionListScreenView(activity);
-        }
-    }
 
     @Bind(R.id.toolbar)
     Toolbar toolbarView;
@@ -50,5 +44,44 @@ public final class TransactionListScreenView extends CoordinatorLayout {
     @SuppressWarnings("unused")
     public void onCreateButtonClick() {
         flow.set(new TransactionUpdateScreenView.TransactionUpdateScreen());
+    }
+
+    public static final class TransactionListScreen implements Screen {
+
+        public TransactionListScreen() {
+        }
+
+        @Override
+        public View getView(AppCompatActivity activity) {
+            return new TransactionListScreenView(activity);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+        }
+
+        private TransactionListScreen(Parcel in, ClassLoader loader) {
+        }
+
+        public static final Creator<TransactionListScreen> CREATOR =
+                new ClassLoaderCreator<TransactionListScreen>() {
+            @Override
+            public TransactionListScreen createFromParcel(Parcel source, ClassLoader loader) {
+                return new TransactionListScreen(source, loader);
+            }
+            @Override
+            public TransactionListScreen createFromParcel(Parcel source) {
+                return createFromParcel(source, null);
+            }
+            @Override
+            public TransactionListScreen[] newArray(int size) {
+                return new TransactionListScreen[size];
+            }
+        };
     }
 }

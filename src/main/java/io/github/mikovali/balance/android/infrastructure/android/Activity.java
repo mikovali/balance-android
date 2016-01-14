@@ -1,6 +1,7 @@
 package io.github.mikovali.balance.android.infrastructure.android;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -8,10 +9,16 @@ import android.view.View;
 
 import flow.Flow;
 import flow.History;
+import flow.StateParceler;
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListScreenView;
 import io.github.mikovali.balance.android.infrastructure.flow.Screen;
+import io.github.mikovali.balance.android.infrastructure.flow.ScreenStateParceler;
 
 public class Activity extends AppCompatActivity {
+
+    private static final String KEY_HISTORY = "history";
+
+    private final StateParceler stateParceler = new ScreenStateParceler();
 
     private Flow flow;
 
@@ -19,7 +26,16 @@ public class Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        flow = new Flow(History.single(new TransactionListScreenView.TransactionListScreen()));
+        final History history;
+        if (savedInstanceState == null) {
+            history = History.single(new TransactionListScreenView.TransactionListScreen());
+        } else {
+            final Parcelable historyState = savedInstanceState.getParcelable(KEY_HISTORY);
+            //noinspection ConstantConditions
+            history = History.from(historyState, stateParceler);
+        }
+
+        flow = new Flow(history);
         flow.setDispatcher(new Flow.Dispatcher() {
             @Override
             public void dispatch(Flow.Traversal traversal, Flow.TraversalCallback callback) {
@@ -32,6 +48,12 @@ public class Activity extends AppCompatActivity {
                 callback.onTraversalCompleted();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_HISTORY, flow.getHistory().getParcelable(stateParceler));
     }
 
     @Override
