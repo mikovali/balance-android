@@ -3,8 +3,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
-        classpath "com.neenbedankt.gradle.plugins:android-apt:1.8"
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
@@ -13,6 +13,10 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
     jcenter()
+}
+
+ext {
+    androidSupportLibraryVersion = '23.1.1'
 }
 
 dependencies {
@@ -32,7 +36,7 @@ dependencies {
     provided 'javax.annotation:javax.annotation-api:1.2'
 
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
 
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 
@@ -42,12 +46,12 @@ dependencies {
 }
 
 android {
-    buildToolsVersion androidBuildToolsVersion
-    compileSdkVersion Integer.parseInt(androidCompileSdkVersion)
+    buildToolsVersion '23.0.2'
+    compileSdkVersion 23
 
     defaultConfig {
-        minSdkVersion Integer.parseInt(androidMinSdkVersion)
-        targetSdkVersion Integer.parseInt(androidTargetSdkVersion)
+        minSdkVersion 19
+        targetSdkVersion 23
 
         applicationId 'io.github.mikovali.balance.android'
         versionCode Integer.parseInt(appVersionCode)
