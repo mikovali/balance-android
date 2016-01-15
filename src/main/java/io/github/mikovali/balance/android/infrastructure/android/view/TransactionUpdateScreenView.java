@@ -29,6 +29,7 @@ public class TransactionUpdateScreenView extends LinearLayout {
 
         setOrientation(VERTICAL);
 
+        toolbarView.setTitle(R.string.transaction_update_create_title);
         final Drawable navigationIcon = DrawableCompat.wrap(ResourcesCompat
                 .getDrawable(activity.getResources(), R.drawable.ic_clear, null));
         DrawableCompat.setTint(navigationIcon, Color.WHITE);
