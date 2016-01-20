@@ -49,7 +49,7 @@ public final class TransactionListScreenView extends CoordinatorLayout {
     public static final class TransactionListScreen extends BaseScreen<TransactionListScreenView> {
 
         public TransactionListScreen() {
-            super(TransactionListScreenView.class);
+            super(R.id.transactionListScreen, TransactionListScreenView.class);
         }
 
         @Override

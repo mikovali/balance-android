@@ -4,13 +4,14 @@ import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import io.github.mikovali.balance.android.R;
-
 public abstract class BaseScreen<T extends View> implements Screen {
+
+    private final int viewId;
 
     private final Class<T> type;
 
-    public BaseScreen(Class<T> type) {
+    public BaseScreen(int viewId, Class<T> type) {
+        this.viewId = viewId;
         this.type = type;
     }
 
@@ -18,12 +19,12 @@ public abstract class BaseScreen<T extends View> implements Screen {
 
     @Override
     public View getView(AppCompatActivity activity) {
-        final View view = activity.findViewById(R.id.screen);
+        final View view = activity.findViewById(viewId);
         if (view != null && type.isAssignableFrom(view.getClass())) {
             return view;
         }
         final T created = createView(activity);
-        created.setId(R.id.screen);
+        created.setId(viewId);
         return created;
     }
 
@@ -34,10 +35,12 @@ public abstract class BaseScreen<T extends View> implements Screen {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(viewId);
         dest.writeSerializable(type);
     }
 
     protected BaseScreen(Parcel in, ClassLoader loader) {
+        viewId = in.readInt();
         //noinspection unchecked
         type = (Class<T>) in.readSerializable();
     }

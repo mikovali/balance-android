@@ -41,7 +41,7 @@ public class TransactionUpdateScreenView extends LinearLayout {
     public static final class TransactionUpdateScreen extends BaseScreen<TransactionUpdateScreenView> {
 
         public TransactionUpdateScreen() {
-            super(TransactionUpdateScreenView.class);
+            super(R.id.transactionUpdateScreen, TransactionUpdateScreenView.class);
         }
 
         @Override
