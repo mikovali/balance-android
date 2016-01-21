@@ -33,22 +33,7 @@ public class SqliteTransactionRepository implements TransactionRepository {
                 .defer(new Func0<Observable<List<Transaction>>>() {
                     @Override
                     public Observable<List<Transaction>> call() {
-                        SystemClock.sleep(3000);
-
-                        final List<Transaction> transactions = new ArrayList<>();
-
-                        final Cursor cursor = appDatabaseOpenHelper.getReadableDatabase()
-                                .rawQuery(String.format("SELECT %s, %s FROM %s",
-                                        DB_APP_TRANSACTIONS_ID, DB_APP_TRANSACTIONS_AMOUNT,
-                                        DB_APP_TRANSACTIONS), null);
-                        if (cursor.moveToFirst()) {
-                            do {
-                                transactions.add(TransactionMapper.fromCursor(cursor));
-                            } while (cursor.moveToNext());
-                        }
-                        cursor.close();
-
-                        return Observable.just(transactions);
+                        return Observable.just(doFind());
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -58,5 +43,24 @@ public class SqliteTransactionRepository implements TransactionRepository {
     @Override
     public Observable<Transaction> insert(Transaction transaction) {
         return null;
+    }
+
+    private List<Transaction> doFind() {
+        SystemClock.sleep(3000);
+
+        final List<Transaction> transactions = new ArrayList<>();
+
+        final Cursor cursor = appDatabaseOpenHelper.getReadableDatabase()
+                .rawQuery(String.format("SELECT %s, %s FROM %s",
+                        DB_APP_TRANSACTIONS_ID, DB_APP_TRANSACTIONS_AMOUNT,
+                        DB_APP_TRANSACTIONS), null);
+        if (cursor.moveToFirst()) {
+            do {
+                transactions.add(TransactionMapper.fromCursor(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return transactions;
     }
 }

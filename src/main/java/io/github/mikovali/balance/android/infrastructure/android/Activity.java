@@ -5,13 +5,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
+
+import javax.inject.Inject;
 
 import flow.Flow;
 import flow.History;
 import flow.StateParceler;
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListScreenView;
-import io.github.mikovali.balance.android.infrastructure.flow.Screen;
+import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenStateParceler;
 
 public class Activity extends AppCompatActivity {
@@ -20,11 +21,15 @@ public class Activity extends AppCompatActivity {
 
     private final StateParceler stateParceler = new ScreenStateParceler();
 
+    @Inject
+    ScreenDispatcher dispatcher;
+
     private Flow flow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getAppComponent(this).inject(this);
 
         final History history;
         if (savedInstanceState == null) {
@@ -35,36 +40,16 @@ public class Activity extends AppCompatActivity {
             history = History.from(historyState, stateParceler);
         }
 
+        dispatcher.onCreate(this);
+
         flow = new Flow(history);
-        flow.setDispatcher(new Flow.Dispatcher() {
-            @Override
-            public void dispatch(Flow.Traversal traversal, Flow.TraversalCallback callback) {
-                final History origin = traversal.origin;
-                final Screen originScreen = origin.top();
-                final View originView = originScreen.getView(Activity.this);
+        flow.setDispatcher(dispatcher);
+    }
 
-                final History destination = traversal.destination;
-                final Screen destinationScreen = destination.top();
-                final View destinationView = destinationScreen.getView(Activity.this);
-
-                switch (traversal.direction) {
-                    case FORWARD:
-                        origin.currentViewState().save(originView);
-                        break;
-                    case BACKWARD:
-                        destination.currentViewState().restore(destinationView);
-                        break;
-                    case REPLACE:
-                    default:
-                        // view lifecycle takes care of the state
-                        break;
-                }
-
-                setContentView(destinationView);
-
-                callback.onTraversalCompleted();
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        dispatcher.onDestroy();
+        super.onDestroy();
     }
 
     @Override
