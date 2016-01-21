@@ -24,9 +24,10 @@ public class ScreenDispatcher implements Flow.Dispatcher {
             throw new IllegalStateException("Activity has not been set for the dispatcher");
         }
 
+        // call this before creating the destination view because the view needs the screen ID
+        callback.onTraversalCompleted();
+
         final History origin = traversal.origin;
-        final Screen originScreen = origin.top();
-        final View originView = originScreen.getView(activity);
 
         final History destination = traversal.destination;
         final Screen destinationScreen = destination.top();
@@ -34,7 +35,8 @@ public class ScreenDispatcher implements Flow.Dispatcher {
 
         switch (traversal.direction) {
             case FORWARD:
-                origin.currentViewState().save(originView);
+                final Screen originScreen = origin.top();
+                origin.currentViewState().save(originScreen.getView(activity));
                 break;
             case BACKWARD:
                 destination.currentViewState().restore(destinationView);
@@ -46,7 +48,5 @@ public class ScreenDispatcher implements Flow.Dispatcher {
         }
 
         activity.setContentView(destinationView);
-
-        callback.onTraversalCompleted();
     }
 }
