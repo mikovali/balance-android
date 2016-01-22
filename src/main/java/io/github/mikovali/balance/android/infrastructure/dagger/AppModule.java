@@ -5,10 +5,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import dagger.Module;
 import dagger.Provides;
+import flow.StateParceler;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.AppDatabase;
 import io.github.mikovali.balance.android.infrastructure.android.content.SqliteTransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
+import io.github.mikovali.balance.android.infrastructure.flow.ScreenStateParceler;
 
 @Module
 public class AppModule {
@@ -25,6 +27,12 @@ public class AppModule {
     @AppScope
     SQLiteOpenHelper provideAppDatabaseOpenHelper() {
         return new AppDatabase(application);
+    }
+
+    @Provides
+    @AppScope
+    StateParceler provideStateParceler() {
+        return new ScreenStateParceler();
     }
 
     @Provides

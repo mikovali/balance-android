@@ -13,13 +13,13 @@ import flow.History;
 import flow.StateParceler;
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListScreenView;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
-import io.github.mikovali.balance.android.infrastructure.flow.ScreenStateParceler;
 
 public class Activity extends AppCompatActivity {
 
     private static final String KEY_HISTORY = "history";
 
-    private final StateParceler stateParceler = new ScreenStateParceler();
+    @Inject
+    StateParceler stateParceler;
 
     @Inject
     ScreenDispatcher dispatcher;
