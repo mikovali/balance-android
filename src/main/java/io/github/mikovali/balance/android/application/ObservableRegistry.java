@@ -6,7 +6,6 @@ import rx.Observable;
 
 /**
  * TODO things to do
- *  * figure out flow when creating/updating something
  *  * figure out flow when refreshing/loading more items
  *  * figure out how to make it simple as possible to use in presenters (BasePresenter)
  *  * figure out the best place to remove observables from registry on navigation
@@ -39,7 +38,7 @@ public class ObservableRegistry {
         return observables
                 .get(screenId, new SparseArray<SparseArray<Observable<?>>>())
                 .get(viewId, new SparseArray<Observable<?>>())
-                .get(id) == null;
+                .get(id) != null;
     }
 
     public void remove(int screenId, int viewId, int id) {

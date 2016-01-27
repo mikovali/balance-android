@@ -41,8 +41,16 @@ public class SqliteTransactionRepository implements TransactionRepository {
     }
 
     @Override
-    public Observable<Transaction> insert(Transaction transaction) {
-        return null;
+    public Observable<Transaction> insert(final Transaction transaction) {
+        return Observable
+                .defer(new Func0<Observable<Transaction>>() {
+                    @Override
+                    public Observable<Transaction> call() {
+                        return Observable.just(doInsert(transaction));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private List<Transaction> doFind() {
@@ -62,5 +70,14 @@ public class SqliteTransactionRepository implements TransactionRepository {
         cursor.close();
 
         return transactions;
+    }
+
+    private Transaction doInsert(Transaction transaction) {
+        SystemClock.sleep(3000);
+
+        appDatabaseOpenHelper.getWritableDatabase()
+                .insert(DB_APP_TRANSACTIONS, null, TransactionMapper.toContentValues(transaction));
+
+        return transaction;
     }
 }
