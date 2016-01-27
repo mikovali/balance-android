@@ -75,8 +75,10 @@ public class TransactionListPresenter extends BasePresenter<TransactionListView>
 
     @Override
     public void call(List<Transaction> transactions) {
-        findSubscription.unsubscribe();
-        findSubscription = null;
+        if (findSubscription != null && !findSubscription.isUnsubscribed()) {
+            findSubscription.unsubscribe();
+            findSubscription = null;
+        }
         observableRegistry.remove(screenId, viewId, OBSERVABLE_FIND);
 
         setTransactions(transactions);
