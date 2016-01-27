@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
+import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.AppDatabase;
 import io.github.mikovali.balance.android.infrastructure.android.content.SqliteTransactionRepository;
@@ -39,6 +40,12 @@ public class AppModule {
     @AppScope
     ScreenDispatcher provideScreenDispatcher() {
         return new ScreenDispatcher();
+    }
+
+    @Provides
+    @AppScope
+    ObservableRegistry observableRegistry() {
+        return new ObservableRegistry();
     }
 
     // Transaction

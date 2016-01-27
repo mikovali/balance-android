@@ -3,6 +3,7 @@ package io.github.mikovali.balance.android.infrastructure.android;
 import android.os.StrictMode;
 
 import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
@@ -14,6 +15,7 @@ public class DebugApp extends App {
         setupStrictMode();
         setupTimber();
         setupStetho();
+        setupLeakCanary();
     }
 
     // StrictMode
@@ -33,5 +35,11 @@ public class DebugApp extends App {
 
     private void setupStetho() {
         Stetho.initializeWithDefaults(this);
+    }
+
+    // LeakCanary
+
+    private void setupLeakCanary() {
+        LeakCanary.install(this);
     }
 }
