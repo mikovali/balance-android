@@ -42,7 +42,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         viewId = view.getId();
     }
 
-    public void onPositiveButtonClick() {
+    public void onDoneButtonClick() {
         final long amount = view.getAmount();
 
         final Transaction transaction = new Transaction(UUID.randomUUID(), amount);

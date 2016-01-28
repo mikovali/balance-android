@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <RadioGroup
-            android:id="@+id/transactionAmountSign"
+            android:id="@id/transactionUpdateAmountSign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/transactionAmountSignNegative"
+                android:id="@id/transactionUpdateAmountSignNegative"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -21,7 +22,7 @@
                 android:text="@string/transaction_update_amount_sign_negative" />
 
             <RadioButton
-                android:id="@+id/transactionAmountSignPositive"
+                android:id="@id/transactionUpdateAmountSignPositive"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,14 +31,13 @@
         </RadioGroup>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/transactionAmountLabel"
+            android:id="@id/transactionUpdateAmountLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/transactionAmountSign"
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/transactionAmount"
+                android:id="@id/transactionUpdateAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number|numberDecimal"
@@ -47,14 +47,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/transactionDescriptionLabel"
+            android:id="@id/transactionUpdateDescriptionLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/transactionAmountLabel"
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/transactionDescription"
+                android:id="@id/transactionUpdateDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
@@ -64,22 +63,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/transactionDescriptionLabel"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp">
-
-            <Button
-                android:id="@+id/transactionUpdatePositiveButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="@string/transaction_update_create_button" />
-
-        </FrameLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </merge>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="transaction_list_title">Transactions</string>
     <string name="transaction_list_empty_text">No transactions to show</string>
 
     <string name="transaction_update_create_title">New transaction</string>
-    <string name="transaction_update_close">Close</string>
+    <string name="transaction_update_close_button">Close</string>
+    <string name="transaction_update_done_button">Done</string>
     <string name="transaction_update_amount_sign_positive">Income</string>
     <string name="transaction_update_amount_sign_negative">Expense</string>
     <string name="transaction_update_amount">Amount</string>
     <string name="transaction_update_description">Add notes to the transaction…</string>
-    <string name="transaction_update_create_button">Create transaction</string>
 
 </resources>

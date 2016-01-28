@@ -34,8 +34,9 @@ public final class TransactionListScreenView extends CoordinatorLayout {
         inflate(activity, R.layout.transaction_list_screen, this);
         ButterKnife.bind(this);
 
-        activity.setSupportActionBar(toolbarView);
+        toolbarView.setTitle(R.string.transaction_list_title);
 
+        // TODO color
         final Drawable createButtonDrawable = DrawableCompat.wrap(createButton.getDrawable());
         DrawableCompat.setTint(createButtonDrawable, Color.WHITE);
     }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.github.mikovali.android.mvp.ViewSavedState;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.transaction.TransactionUpdatePresenter;
@@ -20,13 +19,13 @@ import timber.log.Timber;
 
 public class TransactionUpdateAndroidView extends ScrollView implements TransactionUpdateView {
 
-    @Bind(R.id.transactionAmountSign)
+    @Bind(R.id.transactionUpdateAmountSign)
     RadioGroup amountSignView;
 
-    @Bind(R.id.transactionAmountLabel)
+    @Bind(R.id.transactionUpdateAmountLabel)
     TextInputLayout amountLabelView;
 
-    @Bind(R.id.transactionAmount)
+    @Bind(R.id.transactionUpdateAmount)
     TextView amountView;
 
     private final TransactionUpdatePresenter presenter;
@@ -34,9 +33,11 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
     public TransactionUpdateAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
         presenter = new TransactionUpdatePresenter(this);
+
         inflate(context, R.layout.transaction_update, this);
-        setFillViewport(true);
         ButterKnife.bind(this);
+
+        setFillViewport(true);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
         final int sign = amountSignView.getCheckedRadioButtonId();
 
         final StringBuilder builder = new StringBuilder();
-        if (sign == R.id.transactionAmountSignNegative) {
+        if (sign == R.id.transactionUpdateAmountSignNegative) {
             builder.append("-");
         }
         builder.append(amountText);
@@ -61,10 +62,8 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
         }
     }
 
-    @OnClick(R.id.transactionUpdatePositiveButton)
-    @SuppressWarnings("unused")
-    public void onPositiveButtonClick() {
-        presenter.onPositiveButtonClick();
+    public void onDoneButtonClick() {
+        presenter.onDoneButtonClick();
     }
 
     // lifecycle
