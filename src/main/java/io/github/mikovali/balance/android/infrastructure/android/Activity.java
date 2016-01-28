@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import javax.inject.Inject;
 
@@ -70,17 +69,6 @@ public class Activity extends AppCompatActivity {
     public void onBackPressed() {
         if (!flow.goBack()) {
             super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }
