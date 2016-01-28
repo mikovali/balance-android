@@ -10,6 +10,7 @@
     <string name="transaction_update_amount_sign_positive">Income</string>
     <string name="transaction_update_amount_sign_negative">Expense</string>
     <string name="transaction_update_amount">Amount</string>
+    <string name="transaction_update_amount_validation_invalid">Amount cannot be zero</string>
     <string name="transaction_update_description">Add notes to the transaction…</string>
 
 </resources>

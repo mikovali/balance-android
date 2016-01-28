@@ -62,6 +62,12 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
         }
     }
 
+    @Override
+    public void setAmountInvalid(boolean amountInvalid) {
+        amountLabelView.setError(getResources().getString(
+                R.string.transaction_update_amount_validation_invalid));
+    }
+
     public void onDoneButtonClick() {
         presenter.onDoneButtonClick();
     }

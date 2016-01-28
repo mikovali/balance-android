@@ -45,6 +45,12 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
     public void onDoneButtonClick() {
         final long amount = view.getAmount();
 
+        // validation
+        if (amount == 0) {
+            view.setAmountInvalid(true);
+            return;
+        }
+
         final Transaction transaction = new Transaction(UUID.randomUUID(), amount);
 
         final Observable<Transaction> createObservable = transactionRepository.insert(transaction)
