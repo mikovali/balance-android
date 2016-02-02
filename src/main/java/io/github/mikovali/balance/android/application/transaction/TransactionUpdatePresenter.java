@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
+import io.github.mikovali.balance.android.application.BackButtonService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
@@ -16,12 +17,15 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateView>
-        implements Action1<Transaction> {
+        implements Action1<Transaction>, BackButtonService.OnBackButtonClickListener {
 
     private static final int OBSERVABLE_CREATE = 0;
 
     @Inject
     ObservableRegistry observableRegistry;
+
+    @Inject
+    BackButtonService backButtonService;
 
     @Inject
     TransactionRepository transactionRepository;
@@ -69,8 +73,15 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
     }
 
     @Override
+    public boolean onBackButtonClick() {
+        // TODO confirmation dialog
+        return false;
+    }
+
+    @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+        backButtonService.addOnBackButtonClickListener(this);
 
         if (observableRegistry.has(screenId, viewId, OBSERVABLE_CREATE)) {
             createSubscription = observableRegistry
@@ -81,10 +92,11 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     @Override
     public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
         if (createSubscription != null && !createSubscription.isUnsubscribed()) {
             createSubscription.unsubscribe();
             createSubscription = null;
         }
+        backButtonService.removeOnBackButtonClickListener(this);
+        super.onDetachedFromWindow();
     }
 }

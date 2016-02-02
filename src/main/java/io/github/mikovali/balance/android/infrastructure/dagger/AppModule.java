@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
+import io.github.mikovali.balance.android.application.BackButtonService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.AppDatabase;
@@ -44,8 +45,14 @@ public class AppModule {
 
     @Provides
     @AppScope
-    ObservableRegistry observableRegistry() {
+    ObservableRegistry provideObservableRegistry() {
         return new ObservableRegistry();
+    }
+
+    @Provides
+    @AppScope
+    BackButtonService provideBackButtonService() {
+        return new BackButtonService();
     }
 
     // Transaction
