@@ -11,8 +11,8 @@ import flow.Flow;
 import flow.History;
 import flow.StateParceler;
 import io.github.mikovali.balance.android.application.BackButtonService;
-import io.github.mikovali.balance.android.infrastructure.android.view.TransactionListScreenView;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
+import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionListScreen;
 
 public class Activity extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class Activity extends AppCompatActivity {
 
         final History history;
         if (savedInstanceState == null) {
-            history = History.single(new TransactionListScreenView.TransactionListScreen());
+            history = History.single(new TransactionListScreen());
         } else {
             final Parcelable historyState = savedInstanceState.getParcelable(KEY_HISTORY);
             //noinspection ConstantConditions
