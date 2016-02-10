@@ -12,5 +12,6 @@
     <string name="transaction_update_amount">Amount</string>
     <string name="transaction_update_amount_validation_invalid">Amount cannot be zero</string>
     <string name="transaction_update_description">Add notes to the transaction…</string>
+    <string name="transaction_update_discard_message">Do you want to discard the transaction?</string>
 
 </resources>

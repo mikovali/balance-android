@@ -5,7 +5,12 @@ import android.app.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackButtonService {
+/**
+ * Manages navigation and back stack.
+ *
+ * TODO refactor
+ */
+public class NavigationService {
 
     public interface OnBackButtonClickListener {
         boolean onBackButtonClick();
@@ -15,7 +20,7 @@ public class BackButtonService {
 
     private Activity activity;
 
-    public BackButtonService() {
+    public NavigationService() {
         listeners = new ArrayList<>();
     }
 

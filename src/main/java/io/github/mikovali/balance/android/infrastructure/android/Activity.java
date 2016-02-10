@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import flow.Flow;
 import flow.History;
 import flow.StateParceler;
-import io.github.mikovali.balance.android.application.BackButtonService;
+import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
 import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionListScreen;
 
@@ -25,7 +25,7 @@ public class Activity extends AppCompatActivity {
     ScreenDispatcher dispatcher;
 
     @Inject
-    BackButtonService backButtonService;
+    NavigationService navigationService;
 
     private Flow flow;
 
@@ -44,7 +44,7 @@ public class Activity extends AppCompatActivity {
         }
 
         dispatcher.onCreate(this);
-        backButtonService.onCreate(this);
+        navigationService.onCreate(this);
 
         flow = new Flow(history);
         flow.setDispatcher(dispatcher);
@@ -52,7 +52,7 @@ public class Activity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        backButtonService.onDestroy();
+        navigationService.onDestroy();
         dispatcher.onDestroy();
         super.onDestroy();
     }
@@ -73,7 +73,7 @@ public class Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!backButtonService.onBackButtonClick() && !flow.goBack()) {
+        if (!navigationService.onBackButtonClick() && !flow.goBack()) {
             super.onBackPressed();
         }
     }

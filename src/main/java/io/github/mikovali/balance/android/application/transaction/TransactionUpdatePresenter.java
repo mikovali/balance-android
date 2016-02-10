@@ -6,8 +6,10 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
-import io.github.mikovali.balance.android.application.BackButtonService;
+import io.github.mikovali.balance.android.R;
+import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
+import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.App;
@@ -17,7 +19,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateView>
-        implements Action1<Transaction>, BackButtonService.OnBackButtonClickListener {
+        implements Action1<Transaction>, NavigationService.OnBackButtonClickListener {
 
     private static final int OBSERVABLE_CREATE = 0;
 
@@ -25,7 +27,10 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
     ObservableRegistry observableRegistry;
 
     @Inject
-    BackButtonService backButtonService;
+    NavigationService navigationService;
+
+    @Inject
+    WindowService windowService;
 
     @Inject
     TransactionRepository transactionRepository;
@@ -74,14 +79,14 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     @Override
     public boolean onBackButtonClick() {
-        // TODO confirmation dialog
-        return false;
+        windowService.confirm(R.string.transaction_update_discard_message);
+        return true;
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        backButtonService.addOnBackButtonClickListener(this);
+        navigationService.addOnBackButtonClickListener(this);
 
         if (observableRegistry.has(screenId, viewId, OBSERVABLE_CREATE)) {
             createSubscription = observableRegistry
@@ -96,7 +101,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
             createSubscription.unsubscribe();
             createSubscription = null;
         }
-        backButtonService.removeOnBackButtonClickListener(this);
+        navigationService.removeOnBackButtonClickListener(this);
         super.onDetachedFromWindow();
     }
 }
