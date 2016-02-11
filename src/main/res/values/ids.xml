@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item type="id" name="drawerContainer" />
+    <item type="id" name="navigationDrawer" />
+    <item type="id" name="content" />
+    <item type="id" name="toolbar" />
+
+    <item type="id" name="navigationTransactionListButton" />
+    <item type="id" name="navigationStatisticsButton" />
+    <item type="id" name="navigationSettingsButton" />
+
     <item type="id" name="transactionListScreen" />
     <item type="id" name="transactionUpdateScreen" />
 
@@ -13,7 +22,5 @@
     <item type="id" name="transactionUpdateAmount" />
     <item type="id" name="transactionUpdateDescriptionLabel" />
     <item type="id" name="transactionUpdateDescription" />
-
-    <item type="id" name="toolbar" />
 
 </resources>

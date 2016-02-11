@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="navigation_transaction_list_button">@string/transaction_list_title</string>
+    <string name="navigation_statistics_button">Statistics</string>
+    <string name="navigation_settings_button">Settings</string>
+
     <string name="transaction_list_title">Transactions</string>
     <string name="transaction_list_empty_text">No transactions to show</string>
 

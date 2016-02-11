@@ -2,9 +2,11 @@ package io.github.mikovali.balance.android.infrastructure.flow;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import flow.Flow;
 import flow.History;
+import io.github.mikovali.balance.android.R;
 
 public class ScreenDispatcher implements Flow.Dispatcher {
 
@@ -47,6 +49,9 @@ public class ScreenDispatcher implements Flow.Dispatcher {
                 break;
         }
 
-        activity.setContentView(destinationView);
+        final ViewGroup contentView = (ViewGroup) activity.findViewById(R.id.content);
+        contentView.removeAllViews();
+        contentView.addView(destinationView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 }

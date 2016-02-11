@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
 import flow.Flow;
 import flow.History;
 import flow.StateParceler;
+import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
 import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionListScreen;
@@ -32,6 +34,9 @@ public class Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity);
+        ButterKnife.bind(this);
+
         App.getAppComponent(this).inject(this);
 
         final History history;
