@@ -22,6 +22,7 @@ Observable<Uri> observable = service.getImageFromUser();
 
 * `confirm` ([AlertDialog](https://developer.android.com/reference/android/app/AlertDialog.html))
 * `progress` ([ProgressDialog](https://developer.android.com/reference/android/app/ProgressDialog.html) or cover view with overlay)
+* `alert` ([Snackbar](https://developer.android.com/reference/android/support/design/widget/Snackbar.html))
 
 ### NotificationService
 
