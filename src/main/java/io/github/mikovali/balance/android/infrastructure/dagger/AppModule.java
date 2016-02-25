@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
+import io.github.mikovali.balance.android.application.ActivityProvider;
 import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
@@ -20,8 +21,11 @@ public class AppModule {
 
     private final Application application;
 
+    private final ActivityProvider activityProvider;
+
     public AppModule(Application application) {
         this.application = application;
+        activityProvider = new ActivityProvider(application);
     }
 
     // Application
@@ -59,7 +63,7 @@ public class AppModule {
     @Provides
     @AppScope
     WindowService provideWindowService() {
-        return new WindowService(application);
+        return new WindowService(application, activityProvider);
     }
 
     // Transaction

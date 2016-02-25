@@ -18,16 +18,18 @@ import rx.Observable;
 public class WindowService implements DialogInterface.OnDismissListener,
         Application.ActivityLifecycleCallbacks {
 
-    private Activity activity;
+    private final ActivityProvider activityProvider;
 
     private Dialog currentDialog;
     private int currentMessage = 0;
 
-    public WindowService(Application application) {
+    public WindowService(Application application, ActivityProvider activityProvider) {
         application.registerActivityLifecycleCallbacks(this);
+        this.activityProvider = activityProvider;
     }
 
     public Observable<Boolean> confirm(@StringRes int message) {
+        final Activity activity = activityProvider.getCurrentActivity();
         if (activity == null) {
             return null;
         }
@@ -68,7 +70,6 @@ public class WindowService implements DialogInterface.OnDismissListener,
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        this.activity = activity;
         // FIXME This is not called because activity is created before this service.
         if (currentMessage != 0) {
             confirm(currentMessage);
@@ -98,6 +99,5 @@ public class WindowService implements DialogInterface.OnDismissListener,
             currentDialog.setOnDismissListener(this);
             currentDialog = null;
         }
-        this.activity = null;
     }
 }
