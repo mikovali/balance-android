@@ -1,13 +1,11 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,10 +32,12 @@ public final class TransactionListScreenView extends CoordinatorLayout {
         ButterKnife.bind(this);
 
         toolbarView.setTitle(R.string.transaction_list_title);
-
-        // TODO color
-        final Drawable createButtonDrawable = DrawableCompat.wrap(createButton.getDrawable());
-        DrawableCompat.setTint(createButtonDrawable, Color.WHITE);
+        toolbarView.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO WindowService.openNavigation
+            }
+        });
     }
 
     @OnClick(R.id.transactionCreateButton)

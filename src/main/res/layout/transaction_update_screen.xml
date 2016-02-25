@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorPrimary" />
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        app:navigationIcon="@drawable/ic_close"
+        app:navigationContentDescription="@string/transaction_update_close_button" />
 
     <io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateAndroidView
         android:id="@id/transactionUpdate"

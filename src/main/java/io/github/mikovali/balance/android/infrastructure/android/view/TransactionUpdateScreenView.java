@@ -3,7 +3,6 @@ package io.github.mikovali.balance.android.infrastructure.android.view;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,12 +34,6 @@ public class TransactionUpdateScreenView extends LinearLayout implements
         setOrientation(VERTICAL);
 
         toolbarView.setTitle(R.string.transaction_update_create_title);
-        // TODO color
-        final Drawable navigationIcon = DrawableCompat.wrap(ResourcesCompat
-                .getDrawable(activity.getResources(), R.drawable.ic_clear, null));
-        DrawableCompat.setTint(navigationIcon, Color.WHITE);
-        toolbarView.setNavigationIcon(navigationIcon);
-        toolbarView.setNavigationContentDescription(R.string.transaction_update_close_button);
         toolbarView.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
