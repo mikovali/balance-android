@@ -6,8 +6,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 
+import io.github.mikovali.balance.android.R;
 import rx.Observable;
 
 /**
@@ -60,6 +63,19 @@ public class WindowService implements DialogInterface.OnDismissListener,
         if (currentDialog != null) {
             currentDialog.dismiss();
         }
+    }
+
+    public void showNavigation() {
+        final Activity activity = activityProvider.getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        final DrawerLayout navigationDrawer = (DrawerLayout) activity
+                .findViewById(R.id.drawerContainer);
+        if (navigationDrawer == null) {
+            return;
+        }
+        navigationDrawer.openDrawer(GravityCompat.START);
     }
 
     @Override
