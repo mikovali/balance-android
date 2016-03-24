@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android.view;
+package io.github.mikovali.balance.android.infrastructure.android.ui.screen;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,8 +14,8 @@ import butterknife.OnClick;
 import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.WindowService;
+import io.github.mikovali.balance.android.application.transaction.TransactionUpdateScreen;
 import io.github.mikovali.balance.android.infrastructure.android.App;
-import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionUpdateScreen;
 
 public final class TransactionListScreenView extends CoordinatorLayout {
 

@@ -9,7 +9,7 @@ import flow.History;
 import flow.StateParceler;
 import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.android.navigation.Screen;
-import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionListScreen;
+import io.github.mikovali.balance.android.application.transaction.TransactionListScreen;
 
 public class FlowNavigationService implements NavigationService {
 

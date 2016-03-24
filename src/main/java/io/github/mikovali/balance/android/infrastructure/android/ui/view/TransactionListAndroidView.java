@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android.view;
+package io.github.mikovali.balance.android.infrastructure.android.ui.view;
 
 import android.content.Context;
 import android.os.Parcelable;
@@ -17,6 +17,8 @@ import io.github.mikovali.balance.android.application.transaction.TransactionLis
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.App;
+import io.github.mikovali.balance.android.infrastructure.android.ui.CardViewBottomMarginDecorator;
+import io.github.mikovali.balance.android.infrastructure.android.ui.EmptyViewLinearLayoutManager;
 
 public class TransactionListAndroidView extends RecyclerView implements TransactionListView {
 

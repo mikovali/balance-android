@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <io.github.mikovali.balance.android.infrastructure.android.view.TransactionListAndroidView
+    <io.github.mikovali.balance.android.infrastructure.android.ui.view.TransactionListAndroidView
         android:id="@+id/transactionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android.view;
+package io.github.mikovali.balance.android.infrastructure.android.ui;
 
 import android.content.res.TypedArray;
 import android.graphics.Rect;

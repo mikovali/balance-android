@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android.view;
+package io.github.mikovali.balance.android.infrastructure.android.ui.view;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.domain.model.Transaction;
+import io.github.mikovali.balance.android.infrastructure.android.ui.EmptyViewLayoutManager;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
 

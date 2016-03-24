@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.flow.screen;
+package io.github.mikovali.balance.android.application.transaction;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import io.github.mikovali.android.navigation.BaseScreen;
 import io.github.mikovali.balance.android.R;
-import io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateScreenView;
+import io.github.mikovali.balance.android.infrastructure.android.ui.screen.TransactionUpdateScreenView;
 
 public class TransactionUpdateScreen extends BaseScreen {
 

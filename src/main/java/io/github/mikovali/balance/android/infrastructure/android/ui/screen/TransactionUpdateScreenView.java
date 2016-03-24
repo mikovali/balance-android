@@ -1,4 +1,4 @@
-package io.github.mikovali.balance.android.infrastructure.android.view;
+package io.github.mikovali.balance.android.infrastructure.android.ui.screen;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.DeviceService;
 import io.github.mikovali.balance.android.infrastructure.android.App;
+import io.github.mikovali.balance.android.infrastructure.android.ui.view.TransactionUpdateAndroidView;
 
 public class TransactionUpdateScreenView extends LinearLayout implements
         Toolbar.OnMenuItemClickListener {
