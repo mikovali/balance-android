@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
 import io.github.mikovali.balance.android.application.ActivityProvider;
+import io.github.mikovali.balance.android.application.DeviceService;
 import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
@@ -52,6 +53,12 @@ public class AppModule {
     @AppScope
     ObservableRegistry provideObservableRegistry() {
         return new ObservableRegistry();
+    }
+
+    @Provides
+    @AppScope
+    DeviceService provideDeviceService() {
+        return new DeviceService(activityProvider);
     }
 
     @Provides

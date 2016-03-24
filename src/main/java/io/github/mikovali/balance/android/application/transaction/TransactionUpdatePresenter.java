@@ -5,7 +5,7 @@ import java.util.UUID;
 import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
 import io.github.mikovali.balance.android.R;
-import io.github.mikovali.balance.android.application.NavigationService;
+import io.github.mikovali.balance.android.application.DeviceService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.domain.model.Transaction;
@@ -16,13 +16,13 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateView>
-        implements Action1<Transaction>, NavigationService.OnBackButtonClickListener {
+        implements Action1<Transaction>, DeviceService.OnBackButtonClickListener {
 
     private static final int OBSERVABLE_CREATE = 0;
 
     private final ObservableRegistry observableRegistry;
 
-    private final NavigationService navigationService;
+    private final DeviceService deviceService;
 
     private final WindowService windowService;
 
@@ -37,12 +37,12 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     public TransactionUpdatePresenter(TransactionUpdateView view,
                                       ObservableRegistry observableRegistry,
-                                      NavigationService navigationService,
+                                      DeviceService deviceService,
                                       WindowService windowService,
                                       TransactionRepository transactionRepository) {
         super(view);
         this.observableRegistry = observableRegistry;
-        this.navigationService = navigationService;
+        this.deviceService = deviceService;
         this.windowService = windowService;
         this.transactionRepository = transactionRepository;
 
@@ -87,7 +87,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        navigationService.addOnBackButtonClickListener(this);
+        deviceService.addOnBackButtonClickListener(this);
 
         if (observableRegistry.has(screenId, viewId, OBSERVABLE_CREATE)) {
             createSubscription = observableRegistry
@@ -102,7 +102,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
             createSubscription.unsubscribe();
             createSubscription = null;
         }
-        navigationService.removeOnBackButtonClickListener(this);
+        deviceService.removeOnBackButtonClickListener(this);
         super.onDetachedFromWindow();
     }
 }

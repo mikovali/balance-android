@@ -15,7 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.mikovali.android.mvp.ViewSavedState;
 import io.github.mikovali.balance.android.R;
-import io.github.mikovali.balance.android.application.NavigationService;
+import io.github.mikovali.balance.android.application.DeviceService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.application.transaction.TransactionUpdatePresenter;
@@ -27,7 +27,7 @@ import timber.log.Timber;
 public class TransactionUpdateAndroidView extends ScrollView implements TransactionUpdateView {
 
     @Inject ObservableRegistry observableRegistry;
-    @Inject NavigationService navigationService;
+    @Inject DeviceService deviceService;
     @Inject WindowService windowService;
     @Inject TransactionRepository transactionRepository;
 
@@ -46,7 +46,7 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
         super(context, attrs);
         App.getAppComponent(context).inject(this);
 
-        presenter = new TransactionUpdatePresenter(this, observableRegistry, navigationService,
+        presenter = new TransactionUpdatePresenter(this, observableRegistry, deviceService,
                 windowService,transactionRepository);
 
         inflate(context, R.layout.transaction_update, this);
