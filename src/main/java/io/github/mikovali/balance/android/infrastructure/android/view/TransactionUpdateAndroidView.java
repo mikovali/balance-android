@@ -9,15 +9,27 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.mikovali.android.mvp.ViewSavedState;
 import io.github.mikovali.balance.android.R;
+import io.github.mikovali.balance.android.application.NavigationService;
+import io.github.mikovali.balance.android.application.ObservableRegistry;
+import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.application.transaction.TransactionUpdatePresenter;
 import io.github.mikovali.balance.android.application.transaction.TransactionUpdateView;
+import io.github.mikovali.balance.android.domain.model.TransactionRepository;
+import io.github.mikovali.balance.android.infrastructure.android.App;
 import timber.log.Timber;
 
 public class TransactionUpdateAndroidView extends ScrollView implements TransactionUpdateView {
+
+    @Inject ObservableRegistry observableRegistry;
+    @Inject NavigationService navigationService;
+    @Inject WindowService windowService;
+    @Inject TransactionRepository transactionRepository;
 
     @Bind(R.id.transactionUpdateAmountSign)
     RadioGroup amountSignView;
@@ -32,7 +44,10 @@ public class TransactionUpdateAndroidView extends ScrollView implements Transact
 
     public TransactionUpdateAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        presenter = new TransactionUpdatePresenter(this);
+        App.getAppComponent(context).inject(this);
+
+        presenter = new TransactionUpdatePresenter(this, observableRegistry, navigationService,
+                windowService,transactionRepository);
 
         inflate(context, R.layout.transaction_update, this);
         ButterKnife.bind(this);

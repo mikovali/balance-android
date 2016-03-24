@@ -4,14 +4,11 @@ import android.os.Bundle;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
-import io.github.mikovali.balance.android.infrastructure.android.App;
 import io.github.mikovali.balance.android.infrastructure.flow.Screen;
 import rx.Observable;
 import rx.Subscription;
@@ -26,11 +23,9 @@ public class TransactionListPresenter extends BasePresenter<TransactionListView>
 
     private static final int OBSERVABLE_FIND = 0;
 
-    @Inject
-    ObservableRegistry observableRegistry;
+    private final ObservableRegistry observableRegistry;
 
-    @Inject
-    TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     private List<Transaction> transactions;
 
@@ -39,11 +34,14 @@ public class TransactionListPresenter extends BasePresenter<TransactionListView>
     private final int screenId;
     private final int viewId;
 
-    public TransactionListPresenter(TransactionListView view) {
+    public TransactionListPresenter(TransactionListView view, ObservableRegistry observableRegistry,
+                                    TransactionRepository transactionRepository) {
         super(view);
-        App.getAppComponent(view.getContext()).inject(this);
-        final Flow flow = Flow.get(view.getContext());
+        this.observableRegistry = observableRegistry;
+        this.transactionRepository = transactionRepository;
 
+        // TODO think about this. Should be in base class and not exposed to Flow.
+        final Flow flow = Flow.get(view.getContext());
         screenId = flow.getHistory().<Screen>top().getId();
         viewId = view.getId();
     }
@@ -55,7 +53,8 @@ public class TransactionListPresenter extends BasePresenter<TransactionListView>
             Observable<List<Transaction>> findObservable = observableRegistry
                     .get(screenId, viewId, OBSERVABLE_FIND);
             if (findObservable == null) {
-                findObservable = transactionRepository.find().publish().refCount().cache(1);
+                findObservable = transactionRepository.find().publish().refCount()
+                        .cacheWithInitialCapacity(1);
                 observableRegistry.set(screenId, viewId, OBSERVABLE_FIND, findObservable);
             }
             findSubscription = findObservable.subscribe(this);

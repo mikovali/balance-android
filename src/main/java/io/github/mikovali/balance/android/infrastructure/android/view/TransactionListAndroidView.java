@@ -7,12 +7,20 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.github.mikovali.android.mvp.ViewSavedState;
+import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 import io.github.mikovali.balance.android.application.transaction.TransactionListView;
 import io.github.mikovali.balance.android.domain.model.Transaction;
+import io.github.mikovali.balance.android.domain.model.TransactionRepository;
+import io.github.mikovali.balance.android.infrastructure.android.App;
 
 public class TransactionListAndroidView extends RecyclerView implements TransactionListView {
+
+    @Inject ObservableRegistry observableRegistry;
+    @Inject TransactionRepository transactionRepository;
 
     private final TransactionListPresenter presenter;
 
@@ -20,7 +28,8 @@ public class TransactionListAndroidView extends RecyclerView implements Transact
 
     public TransactionListAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        presenter = new TransactionListPresenter(this);
+        App.getAppComponent(context).inject(this);
+        presenter = new TransactionListPresenter(this, observableRegistry, transactionRepository);
         adapter = new TransactionAdapter();
     }
 
