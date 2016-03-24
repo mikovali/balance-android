@@ -2,15 +2,14 @@ package io.github.mikovali.balance.android.application.transaction;
 
 import java.util.UUID;
 
-import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
+import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.DeviceService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
-import io.github.mikovali.balance.android.infrastructure.flow.Screen;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -20,6 +19,8 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     private static final int OBSERVABLE_CREATE = 0;
 
+    private final NavigationService navigationService;
+
     private final ObservableRegistry observableRegistry;
 
     private final DeviceService deviceService;
@@ -28,27 +29,25 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     private final TransactionRepository transactionRepository;
 
-    private final Flow flow;
-
     private Subscription createSubscription;
 
     private final int screenId;
     private final int viewId;
 
     public TransactionUpdatePresenter(TransactionUpdateView view,
+                                      NavigationService navigationService,
                                       ObservableRegistry observableRegistry,
                                       DeviceService deviceService,
                                       WindowService windowService,
                                       TransactionRepository transactionRepository) {
         super(view);
+        this.navigationService = navigationService;
         this.observableRegistry = observableRegistry;
         this.deviceService = deviceService;
         this.windowService = windowService;
         this.transactionRepository = transactionRepository;
 
-        // TODO think about this. Should be in base class and not exposed to Flow.
-        flow = Flow.get(view.getContext());
-        screenId = flow.getHistory().<Screen>top().getId();
+        screenId = navigationService.getCurrent().getId();
         viewId = view.getId();
     }
 
@@ -75,7 +74,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         createSubscription = null;
         observableRegistry.remove(screenId, viewId, OBSERVABLE_CREATE);
 
-        flow.goBack();
+        navigationService.goBack();
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.github.mikovali.android.mvp.ViewSavedState;
+import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.transaction.TransactionListPresenter;
 import io.github.mikovali.balance.android.application.transaction.TransactionListView;
@@ -19,6 +20,7 @@ import io.github.mikovali.balance.android.infrastructure.android.App;
 
 public class TransactionListAndroidView extends RecyclerView implements TransactionListView {
 
+    @Inject NavigationService navigationService;
     @Inject ObservableRegistry observableRegistry;
     @Inject TransactionRepository transactionRepository;
 
@@ -29,7 +31,8 @@ public class TransactionListAndroidView extends RecyclerView implements Transact
     public TransactionListAndroidView(Context context, AttributeSet attrs) {
         super(context, attrs);
         App.getAppComponent(context).inject(this);
-        presenter = new TransactionListPresenter(this, observableRegistry, transactionRepository);
+        presenter = new TransactionListPresenter(this, navigationService, observableRegistry,
+                transactionRepository);
         adapter = new TransactionAdapter();
     }
 

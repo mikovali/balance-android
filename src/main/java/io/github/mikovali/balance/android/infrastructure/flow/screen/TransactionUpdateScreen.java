@@ -1,35 +1,36 @@
 package io.github.mikovali.balance.android.infrastructure.flow.screen;
 
+import android.content.Context;
 import android.os.Parcel;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 
+import io.github.mikovali.android.navigation.BaseScreen;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.infrastructure.android.view.TransactionUpdateScreenView;
-import io.github.mikovali.balance.android.infrastructure.flow.BaseScreen;
 
-public class TransactionUpdateScreen extends BaseScreen<TransactionUpdateScreenView> {
+public class TransactionUpdateScreen extends BaseScreen {
 
     public TransactionUpdateScreen() {
-        super(R.id.transactionUpdateScreen, TransactionUpdateScreenView.class);
+        super(R.id.transactionUpdateScreen);
     }
 
     @Override
-    protected TransactionUpdateScreenView createView(AppCompatActivity activity) {
-        return new TransactionUpdateScreenView(activity);
+    protected View createView(Context context, ViewGroup container) {
+        return new TransactionUpdateScreenView(context);
     }
 
-    private TransactionUpdateScreen(Parcel in, ClassLoader loader) {
-        super(in, loader);
+    // Parcelable
+
+    protected TransactionUpdateScreen(Parcel parcel) {
+        super(parcel);
     }
 
-    public static final Creator<TransactionUpdateScreen> CREATOR = new ClassLoaderCreator<TransactionUpdateScreen>() {
+    public static final Creator<TransactionUpdateScreen> CREATOR
+            = new Creator<TransactionUpdateScreen>() {
         @Override
-        public TransactionUpdateScreen createFromParcel(Parcel source, ClassLoader loader) {
-            return new TransactionUpdateScreen(source, loader);
-        }
-        @Override
-        public TransactionUpdateScreen createFromParcel(Parcel source) {
-            return createFromParcel(source, null);
+        public TransactionUpdateScreen createFromParcel(Parcel parcel) {
+            return new TransactionUpdateScreen(parcel);
         }
         @Override
         public TransactionUpdateScreen[] newArray(int size) {

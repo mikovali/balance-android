@@ -4,12 +4,11 @@ import android.os.Bundle;
 
 import java.util.List;
 
-import flow.Flow;
 import io.github.mikovali.android.mvp.BasePresenter;
+import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.domain.model.Transaction;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
-import io.github.mikovali.balance.android.infrastructure.flow.Screen;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -34,15 +33,14 @@ public class TransactionListPresenter extends BasePresenter<TransactionListView>
     private final int screenId;
     private final int viewId;
 
-    public TransactionListPresenter(TransactionListView view, ObservableRegistry observableRegistry,
+    public TransactionListPresenter(TransactionListView view, NavigationService navigationService,
+                                    ObservableRegistry observableRegistry,
                                     TransactionRepository transactionRepository) {
         super(view);
         this.observableRegistry = observableRegistry;
         this.transactionRepository = transactionRepository;
 
-        // TODO think about this. Should be in base class and not exposed to Flow.
-        final Flow flow = Flow.get(view.getContext());
-        screenId = flow.getHistory().<Screen>top().getId();
+        screenId = navigationService.getCurrent().getId();
         viewId = view.getId();
     }
 

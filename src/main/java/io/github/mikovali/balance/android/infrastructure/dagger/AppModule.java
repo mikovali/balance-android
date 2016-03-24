@@ -5,15 +5,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import dagger.Module;
 import dagger.Provides;
+import flow.Flow;
 import flow.StateParceler;
+import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.application.ActivityProvider;
 import io.github.mikovali.balance.android.application.DeviceService;
-import io.github.mikovali.balance.android.application.NavigationService;
 import io.github.mikovali.balance.android.application.ObservableRegistry;
 import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.domain.model.TransactionRepository;
 import io.github.mikovali.balance.android.infrastructure.android.content.AppDatabase;
 import io.github.mikovali.balance.android.infrastructure.android.content.SqliteTransactionRepository;
+import io.github.mikovali.balance.android.infrastructure.flow.FlowNavigationService;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenDispatcher;
 import io.github.mikovali.balance.android.infrastructure.flow.ScreenStateParceler;
 
@@ -33,9 +35,38 @@ public class AppModule {
 
     @Provides
     @AppScope
+    DeviceService provideDeviceService() {
+        return new DeviceService(activityProvider);
+    }
+
+    @Provides
+    @AppScope
+    NavigationService provideNavigationService(StateParceler stateParceler,
+                                               Flow.Dispatcher dispatcher) {
+        return new FlowNavigationService(stateParceler, dispatcher);
+    }
+
+    @Provides
+    @AppScope
+    WindowService provideWindowService() {
+        return new WindowService(application, activityProvider);
+    }
+
+    @Provides
+    @AppScope
+    ObservableRegistry provideObservableRegistry() {
+        return new ObservableRegistry();
+    }
+
+    // SQLite
+
+    @Provides
+    @AppScope
     SQLiteOpenHelper provideAppDatabaseOpenHelper() {
         return new AppDatabase(application);
     }
+
+    // Flow
 
     @Provides
     @AppScope
@@ -45,32 +76,8 @@ public class AppModule {
 
     @Provides
     @AppScope
-    ScreenDispatcher provideScreenDispatcher() {
-        return new ScreenDispatcher();
-    }
-
-    @Provides
-    @AppScope
-    ObservableRegistry provideObservableRegistry() {
-        return new ObservableRegistry();
-    }
-
-    @Provides
-    @AppScope
-    DeviceService provideDeviceService() {
-        return new DeviceService(activityProvider);
-    }
-
-    @Provides
-    @AppScope
-    NavigationService provideNavigationService() {
-        return new NavigationService();
-    }
-
-    @Provides
-    @AppScope
-    WindowService provideWindowService() {
-        return new WindowService(application, activityProvider);
+    Flow.Dispatcher provideScreenDispatcher() {
+        return new ScreenDispatcher(activityProvider);
     }
 
     // Transaction

@@ -1,34 +1,37 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import flow.Flow;
 import io.github.mikovali.balance.android.R;
+import io.github.mikovali.balance.android.application.DeviceService;
+import io.github.mikovali.balance.android.infrastructure.android.App;
 
-@SuppressLint("ViewConstructor")
 public class TransactionUpdateScreenView extends LinearLayout implements
         Toolbar.OnMenuItemClickListener {
+
+    @Inject
+    DeviceService deviceService;
 
     @Bind(R.id.toolbar)
     Toolbar toolbarView;
     @Bind(R.id.transactionUpdate)
     TransactionUpdateAndroidView updateView;
 
-    public TransactionUpdateScreenView(AppCompatActivity activity) {
-        super(activity);
-        final Flow flow = Flow.get(activity);
-
-        inflate(activity, R.layout.transaction_update_screen, this);
+    public TransactionUpdateScreenView(Context context) {
+        super(context);
+        App.getAppComponent(context).inject(this);
+        inflate(context, R.layout.transaction_update_screen, this);
         ButterKnife.bind(this);
 
         setOrientation(VERTICAL);
@@ -37,7 +40,7 @@ public class TransactionUpdateScreenView extends LinearLayout implements
         toolbarView.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                flow.goBack();
+                deviceService.triggerBackButtonClick();
             }
         });
         toolbarView.inflateMenu(R.menu.transaction_update);

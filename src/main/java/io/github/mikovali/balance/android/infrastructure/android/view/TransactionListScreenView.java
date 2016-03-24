@@ -1,9 +1,8 @@
 package io.github.mikovali.balance.android.infrastructure.android.view;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -12,14 +11,16 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import flow.Flow;
+import io.github.mikovali.android.navigation.NavigationService;
 import io.github.mikovali.balance.android.R;
 import io.github.mikovali.balance.android.application.WindowService;
 import io.github.mikovali.balance.android.infrastructure.android.App;
 import io.github.mikovali.balance.android.infrastructure.flow.screen.TransactionUpdateScreen;
 
-@SuppressLint("ViewConstructor")
 public final class TransactionListScreenView extends CoordinatorLayout {
+
+    @Inject
+    NavigationService navigationService;
 
     @Inject
     WindowService windowService;
@@ -29,14 +30,11 @@ public final class TransactionListScreenView extends CoordinatorLayout {
     @Bind(R.id.transactionCreateButton)
     FloatingActionButton createButton;
 
-    private final Flow flow;
+    public TransactionListScreenView(Context context) {
+        super(context);
+        App.getAppComponent(context).inject(this);
 
-    public TransactionListScreenView(AppCompatActivity activity) {
-        super(activity);
-        App.getAppComponent(activity).inject(this);
-        flow = Flow.get(activity);
-
-        inflate(activity, R.layout.transaction_list_screen, this);
+        inflate(context, R.layout.transaction_list_screen, this);
         ButterKnife.bind(this);
 
         toolbarView.setTitle(R.string.transaction_list_title);
@@ -51,6 +49,6 @@ public final class TransactionListScreenView extends CoordinatorLayout {
     @OnClick(R.id.transactionCreateButton)
     @SuppressWarnings("unused")
     public void onCreateButtonClick() {
-        flow.set(new TransactionUpdateScreen());
+        navigationService.goTo(new TransactionUpdateScreen());
     }
 }

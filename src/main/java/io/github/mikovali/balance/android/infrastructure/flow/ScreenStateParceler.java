@@ -11,6 +11,9 @@ public class ScreenStateParceler implements StateParceler {
 
     @Override
     public Parcelable wrap(Object instance) {
+        if (!(instance instanceof Parcelable)) {
+            throw new IllegalArgumentException("Screen object must be Parcelable");
+        }
         return (Parcelable) instance;
     }
 

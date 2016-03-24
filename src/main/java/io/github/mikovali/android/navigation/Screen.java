@@ -1,14 +1,15 @@
-package io.github.mikovali.balance.android.infrastructure.flow;
+package io.github.mikovali.android.navigation;
 
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
 public interface Screen extends Parcelable {
 
     @IdRes
     int getId();
 
-    View getView(AppCompatActivity activity);
+    View getView(Context context, ViewGroup container);
 }
