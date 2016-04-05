@@ -10,13 +10,17 @@ import android.support.v7.app.AlertDialog;
 
 import io.github.mikovali.balance.android.R;
 import rx.Observable;
-import timber.log.Timber;
+import rx.Subscriber;
 
 /**
  * Manages window actions such as dialogs and loading.
  */
 public class WindowService implements ActivityProvider.OnActivityLifecycleListener,
-        DialogInterface.OnDismissListener {
+        DialogInterface.OnClickListener, DialogInterface.OnDismissListener {
+
+    private interface OnDialogLifecycleListener {
+        void onDialogDismissed(boolean isPositiveButtonClick);
+    }
 
     private final ActivityProvider activityProvider;
 
@@ -32,6 +36,8 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
     private int currentActionTextRes = -1;
     private Dialog currentDialog;
 
+    private OnDialogLifecycleListener onDialogLifecycleListener;
+
     public WindowService(ActivityProvider activityProvider) {
         this.activityProvider = activityProvider;
         activityProvider.addOnActivityLifecycleListener(this);
@@ -44,7 +50,21 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
         currentNegativeButtonRes = android.R.string.no;
         showCurrent();
 
-        return null; // TODO observable
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                onDialogLifecycleListener = new OnDialogLifecycleListener() {
+                    @Override
+                    public void onDialogDismissed(boolean isPositiveButtonClick) {
+                        if (!subscriber.isUnsubscribed()) {
+                            subscriber.onNext(isPositiveButtonClick);
+                            subscriber.onCompleted();
+                            onDialogLifecycleListener = null;
+                        }
+                    }
+                };
+            }
+        });
     }
 
     /**
@@ -89,8 +109,8 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
             case TYPE_CONFIRM:
                 currentDialog = new AlertDialog.Builder(activity)
                         .setMessage(currentMessageRes)
-                        .setPositiveButton(currentPositiveButtonRes, null)
-                        .setNegativeButton(currentNegativeButtonRes, null)
+                        .setPositiveButton(currentPositiveButtonRes, this)
+                        .setNegativeButton(currentNegativeButtonRes, this)
                         .setOnDismissListener(this)
                         .create();
                 currentDialog.show();
@@ -116,20 +136,10 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
     }
 
     private void hideCurrent() {
-        Timber.e("hideCurrent: %s", currentType);
-        switch (currentType) {
-            case TYPE_CONFIRM:
-                Timber.e("currentDialog: %s", currentDialog);
-                if (currentDialog != null) {
-                    currentDialog.dismiss();
-                    currentDialog = null;
-                }
-                break;
-            case TYPE_ALERT:
-            case TYPE_PROGRESS:
-            case TYPE_NAVIGATION:
-                // do nothing
-                break;
+        // dismiss dialog to avoid memory leak
+        if (currentDialog != null) {
+            currentDialog.dismiss();
+            currentDialog = null;
         }
     }
 
@@ -166,10 +176,22 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
         hideCurrent();
     }
 
+    // DialogInterface.OnClickListener
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (onDialogLifecycleListener != null) {
+            onDialogLifecycleListener.onDialogDismissed(which == DialogInterface.BUTTON_POSITIVE);
+        }
+    }
+
     // DialogInterface.OnDismissListener
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if (onDialogLifecycleListener != null) {
+            onDialogLifecycleListener.onDialogDismissed(false);
+        }
         clearCurrent();
     }
 }

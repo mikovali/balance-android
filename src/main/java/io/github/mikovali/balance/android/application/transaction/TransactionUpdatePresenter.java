@@ -15,9 +15,10 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateView>
-        implements Action1<Transaction>, DeviceService.OnBackButtonClickListener {
+        implements DeviceService.OnBackButtonClickListener {
 
     private static final int OBSERVABLE_CREATE = 0;
+    private static final int OBSERVABLE_DISCARD = 1;
 
     private final NavigationService navigationService;
 
@@ -29,7 +30,32 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
 
     private final TransactionRepository transactionRepository;
 
+    private final Action1<Transaction> createSubscriber = new Action1<Transaction>() {
+        @Override
+        public void call(Transaction transaction) {
+            createSubscription.unsubscribe();
+            createSubscription = null;
+            observableRegistry.remove(screenId, viewId, OBSERVABLE_CREATE);
+
+            navigationService.goBack();
+        }
+    };
+
+    private final Action1<Boolean> discardSubscriber = new Action1<Boolean>() {
+        @Override
+        public void call(Boolean positiveButtonClick) {
+            discardSubscription.unsubscribe();
+            discardSubscription = null;
+            observableRegistry.remove(screenId, viewId, OBSERVABLE_DISCARD);
+
+            if (positiveButtonClick != null && positiveButtonClick) {
+                navigationService.goBack();
+            }
+        }
+    };
+
     private Subscription createSubscription;
+    private Subscription discardSubscription;
 
     private final int screenId;
     private final int viewId;
@@ -65,21 +91,16 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         final Observable<Transaction> createObservable = transactionRepository.insert(transaction)
                 .publish().refCount().cacheWithInitialCapacity(1);
         observableRegistry.set(screenId, viewId, OBSERVABLE_CREATE, createObservable);
-        createSubscription = createObservable.subscribe(this);
-    }
-
-    @Override
-    public void call(Transaction transaction) {
-        createSubscription.unsubscribe();
-        createSubscription = null;
-        observableRegistry.remove(screenId, viewId, OBSERVABLE_CREATE);
-
-        navigationService.goBack();
+        createSubscription = createObservable.subscribe(createSubscriber);
     }
 
     @Override
     public boolean onBackButtonClick() {
-        windowService.confirm(R.string.transaction_update_discard_message);
+        final Observable<Boolean> discardObservable = windowService
+                .confirm(R.string.transaction_update_discard_message)
+                .publish().refCount().cacheWithInitialCapacity(1);
+        observableRegistry.set(screenId, viewId, OBSERVABLE_DISCARD, discardObservable);
+        discardSubscription = discardObservable.subscribe(discardSubscriber);
         return true;
     }
 
@@ -91,7 +112,12 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         if (observableRegistry.has(screenId, viewId, OBSERVABLE_CREATE)) {
             createSubscription = observableRegistry
                     .<Transaction>get(screenId, viewId, OBSERVABLE_CREATE)
-                    .subscribe(this);
+                    .subscribe(createSubscriber);
+        }
+        if (observableRegistry.has(screenId, viewId, OBSERVABLE_DISCARD)) {
+            discardSubscription = observableRegistry
+                    .<Boolean>get(screenId, viewId, OBSERVABLE_DISCARD)
+                    .subscribe(discardSubscriber);
         }
     }
 
@@ -100,6 +126,10 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         if (createSubscription != null && !createSubscription.isUnsubscribed()) {
             createSubscription.unsubscribe();
             createSubscription = null;
+        }
+        if (discardSubscription != null && !discardSubscription.isUnsubscribed()) {
+            discardSubscription.unsubscribe();
+            discardSubscription = null;
         }
         deviceService.removeOnBackButtonClickListener(this);
         super.onDetachedFromWindow();

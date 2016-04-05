@@ -28,11 +28,11 @@ dependencies {
     compile "com.android.support:design:$androidSupportLibraryVersion"
 
     compile 'org.apache.commons:commons-collections4:4.1'
-    compile 'com.jakewharton.timber:timber:4.1.1'
+    compile 'com.jakewharton.timber:timber:4.1.2'
     compile 'com.jakewharton:butterknife:7.0.1'
 
-    compile 'com.google.dagger:dagger:2.1'
-    apt 'com.google.dagger:dagger-compiler:2.1'
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'javax.annotation:javax.annotation-api:1.2'
 
     compile 'io.reactivex:rxjava:1.1.2'
