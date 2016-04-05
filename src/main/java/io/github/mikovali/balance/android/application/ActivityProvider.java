@@ -1,16 +1,24 @@
 package io.github.mikovali.balance.android.application;
 
 import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-public class ActivityProvider implements Application.ActivityLifecycleCallbacks {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActivityProvider {
+
+    public interface OnActivityLifecycleListener {
+        void onActivityCreated();
+        void onActivityDestroyed();
+    }
+
+    private final List<OnActivityLifecycleListener> onActivityLifecycleListeners;
 
     private Activity currentActivity;
 
-    public ActivityProvider(Application application) {
-        application.registerActivityLifecycleCallbacks(this);
+    public ActivityProvider() {
+        onActivityLifecycleListeners = new ArrayList<>();
     }
 
     @Nullable
@@ -18,30 +26,27 @@ public class ActivityProvider implements Application.ActivityLifecycleCallbacks 
         return currentActivity;
     }
 
-    // ActivityLifecycleCallbacks
-
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        currentActivity = activity;
+    public void addOnActivityLifecycleListener(
+            OnActivityLifecycleListener onActivityLifecycleListener) {
+        onActivityLifecycleListeners.add(onActivityLifecycleListener);
     }
 
-    @Override
-    public void onActivityStarted(Activity activity) {}
+    public void removeOnActivityLifecycleListener(
+            OnActivityLifecycleListener onActivityLifecycleListener) {
+        onActivityLifecycleListeners.remove(onActivityLifecycleListener);
+    }
 
-    @Override
-    public void onActivityResumed(Activity activity) {}
+    public void onActivityCreated(Activity activity) {
+        currentActivity = activity;
+        for (final OnActivityLifecycleListener listener : onActivityLifecycleListeners) {
+            listener.onActivityCreated();
+        }
+    }
 
-    @Override
-    public void onActivityPaused(Activity activity) {}
-
-    @Override
-    public void onActivityStopped(Activity activity) {}
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
+    public void onActivityDestroyed() {
         currentActivity = null;
+        for (int i = onActivityLifecycleListeners.size() - 1; i >= 0; i--) {
+            onActivityLifecycleListeners.get(i).onActivityDestroyed();
+        }
     }
 }

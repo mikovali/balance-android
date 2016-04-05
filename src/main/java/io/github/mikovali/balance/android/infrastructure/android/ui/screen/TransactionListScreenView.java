@@ -41,7 +41,7 @@ public final class TransactionListScreenView extends CoordinatorLayout {
         toolbarView.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                windowService.showNavigation();
+                windowService.navigation();
             }
         });
     }

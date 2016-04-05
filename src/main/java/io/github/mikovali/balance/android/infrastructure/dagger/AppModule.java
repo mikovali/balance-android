@@ -24,18 +24,21 @@ public class AppModule {
 
     private final Application application;
 
-    private final ActivityProvider activityProvider;
-
     public AppModule(Application application) {
         this.application = application;
-        activityProvider = new ActivityProvider(application);
     }
 
     // Application
 
     @Provides
     @AppScope
-    DeviceService provideDeviceService() {
+    ActivityProvider provideActivityProvider() {
+        return new ActivityProvider();
+    }
+
+    @Provides
+    @AppScope
+    DeviceService provideDeviceService(ActivityProvider activityProvider) {
         return new DeviceService(activityProvider);
     }
 
@@ -48,8 +51,8 @@ public class AppModule {
 
     @Provides
     @AppScope
-    WindowService provideWindowService() {
-        return new WindowService(application, activityProvider);
+    WindowService provideWindowService(ActivityProvider activityProvider) {
+        return new WindowService(activityProvider);
     }
 
     @Provides
@@ -76,7 +79,7 @@ public class AppModule {
 
     @Provides
     @AppScope
-    Flow.Dispatcher provideScreenDispatcher() {
+    Flow.Dispatcher provideScreenDispatcher(ActivityProvider activityProvider) {
         return new ScreenDispatcher(activityProvider);
     }
 
