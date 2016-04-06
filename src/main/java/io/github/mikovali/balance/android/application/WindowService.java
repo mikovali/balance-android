@@ -7,10 +7,13 @@ import android.support.annotation.StringRes;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import io.github.mikovali.balance.android.R;
 import rx.Observable;
 import rx.Subscriber;
+
+import static butterknife.ButterKnife.findById;
 
 /**
  * Manages window actions such as dialogs and loading.
@@ -70,9 +73,8 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
     /**
      * TODO This should prevent dismissal and back button.
      */
-    public void progress(@StringRes int message) {
+    public void progress() {
         currentType = TYPE_PROGRESS;
-        currentMessageRes = message;
         showCurrent();
     }
 
@@ -119,11 +121,14 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
                 // TODO show Snackbar
                 break;
             case TYPE_PROGRESS:
-                // TODO show Progress View
+                final View progressContainer = findById(activity, R.id.progressContainer);
+                if (progressContainer != null
+                        && progressContainer.getVisibility() != View.VISIBLE) {
+                    progressContainer.setVisibility(View.VISIBLE);
+                }
                 break;
             case TYPE_NAVIGATION:
-                final DrawerLayout navigationDrawer = (DrawerLayout) activity
-                        .findViewById(R.id.drawerContainer);
+                final DrawerLayout navigationDrawer = findById(activity, R.id.drawerContainer);
                 if (navigationDrawer != null
                         && !navigationDrawer.isDrawerOpen(GravityCompat.START)) {
                     navigationDrawer.openDrawer(GravityCompat.START);
@@ -136,10 +141,17 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
     }
 
     private void hideCurrent() {
+        final Activity activity = activityProvider.getCurrentActivity();
         // dismiss dialog to avoid memory leak
         if (currentDialog != null) {
             currentDialog.dismiss();
             currentDialog = null;
+        }
+        if (currentType == TYPE_PROGRESS && activity != null) {
+            final View progressContainer = findById(activity, R.id.progressContainer);
+            if (progressContainer != null && progressContainer.getVisibility() != View.GONE) {
+                progressContainer.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -157,10 +169,10 @@ public class WindowService implements ActivityProvider.OnActivityLifecycleListen
     public void onActivityCreated() {
         switch (currentType) {
             case TYPE_CONFIRM:
+            case TYPE_PROGRESS:
                 showCurrent();
                 break;
             case TYPE_ALERT:
-            case TYPE_PROGRESS:
             case TYPE_NAVIGATION: // re-opens itself
             default:
                 break;

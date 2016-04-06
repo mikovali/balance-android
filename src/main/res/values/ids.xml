@@ -3,7 +3,10 @@
 
     <item type="id" name="drawerContainer" />
     <item type="id" name="navigationDrawer" />
+    <item type="id" name="contentContainer" />
     <item type="id" name="content" />
+    <item type="id" name="progressContainer" />
+    <item type="id" name="progress" />
     <item type="id" name="toolbar" />
 
     <item type="id" name="navigationTransactionListButton" />

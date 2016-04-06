@@ -28,6 +28,7 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
         @Override
         public void onNext(Transaction transaction) {
             super.onNext(transaction);
+            windowService.hide();
             navigationService.goBack();
         }
     };
@@ -66,6 +67,8 @@ public class TransactionUpdatePresenter extends BasePresenter<TransactionUpdateV
             view.setAmountInvalid(true);
             return;
         }
+
+        windowService.progress();
 
         final Transaction transaction = new Transaction(UUID.randomUUID(), amount);
         subscribe(transactionRepository.insert(transaction), OBSERVABLE_CREATE);
